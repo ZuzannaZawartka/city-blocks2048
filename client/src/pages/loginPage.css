@@ -1,0 +1,19 @@
+body {
+    background-color: rgb(61, 61, 61);
+}
+
+#title {
+    color: white;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+}
+
+#desc {
+    text-align: center;
+    color: white;
+}
+
+#form {
+    margin: 0 auto;
+    text-align: center;
+}
