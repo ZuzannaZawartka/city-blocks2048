@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="loginPage.css">
+    <script src="socket.io/socket.io.js"></script>
+
     <title>Login Page</title>
 </head>
 
@@ -14,9 +16,16 @@
     <p id="desc">Take over enemy buildings and conquer the world</p>
     <div id="form">
         <input type="text">
-        <button>Join the room</button>
+        <button id="join_to_room">Join the room</button>
     </div>
 
+    <script>
+        const socket = io();
+    </script>
+
+    <script src="../scripts/Loggin"></script>
+
 </body>
+
 
 </html>
