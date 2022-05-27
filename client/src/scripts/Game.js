@@ -93,32 +93,16 @@ class Game {
             console.log(item, loaded, total);
 
         };
-
-        // model
+        let scene = this.scene
         var loader = new THREE.OBJLoader(manager);
-        var objpath = 'logCabin.obj';
+        var objpath = '../models/logCabin.obj';
 
         loader.load(objpath, function (object) {
-
-            object.traverse(function (child) {
-
-                if (child instanceof THREE.Mesh) {
-
-                    //child.material.map = texture;
-
-                }
-
-            });
-
-            object.position.x = - 60;
-            object.rotation.x = 20 * Math.PI / 180;
-            object.rotation.z = 20 * Math.PI / 180;
-            object.scale.x = 30;
-            object.scale.y = 30;
-            object.scale.z = 30;
-            obj = object
-            scene.add(obj);
-
+            object.scale.x = 0.03;
+            object.scale.y = 0.03;
+            object.scale.z = 0.03;
+            object.position.set(35, 1, 40)
+            scene.add(object);
         });
     }
 
