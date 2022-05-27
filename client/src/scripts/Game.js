@@ -1,7 +1,7 @@
 import Board from "./Board.js"
 import GiantCube from "./GiantCube.js"
 import SideCube from "./SideCubes.js"
-
+import Light from "./Light.js"
 class Game {
     constructor() {
         this.scene = new THREE.Scene();
@@ -12,6 +12,8 @@ class Game {
         this.settingCamera() // Wywoływanie funckji początkowych do kamery, rendera i kreowania świata
         this.settingRenderer()
         this.creatingWorld()
+        this.addingLight()
+        this.addingHouse()
         this.render() // wywołanie metody render
     }
 
@@ -30,6 +32,7 @@ class Game {
         this.camera.fov = 75;
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
+        this.angle = 0 // do obrotu kamery
     }
 
     //CREATING WORLD PART 
@@ -58,12 +61,70 @@ class Game {
     }
 
     addingDecorationSidesCubes() {
-        this.sideCube = new SideCube(50, 300, 50, 'x', 225) // generowanie dekoracyjnego bocznego cuba koło boarda
-        this.scene.add(this.sideCube.generateSidesCube()) // dodawanie do sceny funkcja zwraca mesha którego dodajemy
+        this.sideCubeQueue = new SideCube(250, 360, 80, 'z', 0, 220, 250) // generowanie dekoracyjnego bocznego cuba koło boarda
+        this.scene.add(this.sideCubeQueue.generateSidesCube()) // dodawanie do sceny funkcja zwraca mesha którego dodajemy
+
+        this.sideCubeLongx = new SideCube(10, 360, 150, 'x', 186, 50, 200)
+        this.scene.add(this.sideCubeLongx.generateSidesCube())
+
+        this.sideCubeLongxMid = new SideCube(10, 340, 100, 'x', 196, 75, 220)
+        this.scene.add(this.sideCubeLongxMid.generateSidesCube())
+
+        this.sideCubeShortx = new SideCube(10, 250, 50, 'x', 186, -100, 250)
+        this.scene.add(this.sideCubeShortx.generateSidesCube())
+
+        this.sideCubeShortxMid = new SideCube(10, 200, 30, 'x', 196, -100, 270)
+        this.scene.add(this.sideCubeShortxMid.generateSidesCube())
+
+        this.sideCubeSquarex = new SideCube(10, 50, 50, 'x', 186, -100, 50)
+        this.scene.add(this.sideCubeSquarex.generateSidesCube())
+    }
+
+    addingLight() {
+        this.light = new Light(this.GiantCube)
+        this.scene.add(this.light.getLight())
+        console.log(this.light.getLight())
+    }
+
+    addingHouse() {
+        var manager = new THREE.LoadingManager();
+        manager.onProgress = function (item, loaded, total) {
+
+            console.log(item, loaded, total);
+
+        };
+
+        // model
+        var loader = new THREE.OBJLoader(manager);
+        var objpath = 'logCabin.obj';
+
+        loader.load(objpath, function (object) {
+
+            object.traverse(function (child) {
+
+                if (child instanceof THREE.Mesh) {
+
+                    //child.material.map = texture;
+
+                }
+
+            });
+
+            object.position.x = - 60;
+            object.rotation.x = 20 * Math.PI / 180;
+            object.rotation.z = 20 * Math.PI / 180;
+            object.scale.x = 30;
+            object.scale.y = 30;
+            object.scale.z = 30;
+            obj = object
+            scene.add(obj);
+
+        });
     }
 
     render = () => {
-        this.camera.position.x += 0.1 // obrót kamery
+        this.camera.position.x = Math.sin(this.angle) * 500
+        this.angle += 0.01 // obrót kamery
         this.renderer.render(this.scene, this.camera)
         this.camera.lookAt(this.giantCube.mesh.position)
         this.camera.updateProjectionMatrix()
