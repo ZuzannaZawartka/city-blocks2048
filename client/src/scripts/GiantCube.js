@@ -1,6 +1,5 @@
 class GiantCube {
-    constructor(scene, elementWidth, elementHeigth, elementDepth) {
-        this.scene = scene
+    constructor(elementWidth, elementHeigth, elementDepth) {
         this.elementWidth = elementWidth
         this.elementHeigth = elementHeigth
         this.elementDepth = elementDepth
@@ -16,6 +15,8 @@ class GiantCube {
     }
     generateGiantCube() {
         this.mesh.position.set(0, -(this.elementHeigth / 2), 0)
-        this.scene.add(this.mesh)
+        return this.mesh
     }
 }
+
+export default GiantCube

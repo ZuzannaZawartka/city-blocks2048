@@ -1,3 +1,7 @@
+import Board from "./Board.js"
+import GiantCube from "./GiantCube.js"
+import SideCube from "./SideCubes.js"
+
 class Game {
     constructor() {
         this.scene = new THREE.Scene();
@@ -18,6 +22,7 @@ class Game {
         this.board.generateBoard()
         console.log(this.board)
         this.giantCube = new GiantCube(this.scene, 360, 360, 360)
+        this.sideCube = new SideCube(this.scene, 50, 300, 50, 'x')
         this.render() // wywołanie metody render
     }
 
@@ -28,3 +33,5 @@ class Game {
         requestAnimationFrame(this.render);
     }
 }
+
+export default Game
