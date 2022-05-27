@@ -11,6 +11,4 @@ const socketsInit = (server) => {
 }
 
 
-
-
 module.exports = socketsInit
