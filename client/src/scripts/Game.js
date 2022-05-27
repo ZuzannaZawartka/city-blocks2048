@@ -6,6 +6,9 @@ class Game {
     constructor() {
         this.scene = new THREE.Scene();
         this.init()
+        window.addEventListener('mousedown', (e) => {
+            this.mouseDown(e)
+        })
     }
 
     init() {
@@ -87,6 +90,8 @@ class Game {
     }
 
     addingHouse() {
+        let lvl = this.generateRandomBuilding()
+        let file = lvl + ".obj"
         var manager = new THREE.LoadingManager();
         manager.onProgress = function (item, loaded, total) {
 
@@ -95,15 +100,33 @@ class Game {
         };
         let scene = this.scene
         var loader = new THREE.OBJLoader(manager);
-        var objpath = '../models/logCabin.obj';
+        var objpath = '../models/' + file;
 
         loader.load(objpath, function (object) {
-            object.scale.x = 0.03;
-            object.scale.y = 0.03;
-            object.scale.z = 0.03;
-            object.position.set(35, 1, 40)
+            object.scale.x = 100;
+            object.scale.y = 100;
+            object.scale.z = 100;
+            object.position.set(0, 0, 0)
             scene.add(object);
         });
+    }
+
+    generateRandomBuilding() {
+        return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+    }
+
+    mouseDown = (event) => {
+        this.raycaster = new THREE.Raycaster(); // obiekt Raycastera symulujący "rzucanie" promieni
+        this.mouseVector = new THREE.Vector2() // ten wektor czyli pozycja w przestrzeni 2D na ekranie(x,y) wykorzystany będzie do określenie pozycji myszy na ekranie, a potem przeliczenia na pozycje 3D
+
+        this.mouseVector.x = (event.clientX / innerWidth) * 2 - 1;
+        this.mouseVector.y = -(event.clientY / innerHeight) * 2 + 1;
+        this.raycaster.setFromCamera(this.mouseVector, this.camera);
+        this.intersects = this.raycaster.intersectObjects(this.scene.children);
+        if (this.intersects.length > 0) {
+            // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
+            console.log(this.intersects[0].object);
+        }
     }
 
     render = () => {
