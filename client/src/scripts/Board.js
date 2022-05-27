@@ -1,3 +1,5 @@
+import Field from "./Field.js"
+
 class Board {
     constructor(scene) {
         this.scene = scene
@@ -29,3 +31,4 @@ class Board {
         this.scene.add(board) //DODAJEMY DO SCENY
     }
 }
+export default Board

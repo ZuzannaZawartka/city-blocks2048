@@ -25,3 +25,4 @@ class Field {
         return this.mesh
     }
 }
+export default Field
