@@ -1,20 +1,24 @@
-class SideCubes {
-    constructor(elementWidth, elementHeigth, elementDepth, wall) {
-        this.elementWidth = elementWidth
-        this.elementHeigth = elementHeigth
-        this.elementDepth = elementDepth
+import GiantCube from "./GiantCube.js"
+
+class SideCubes extends GiantCube {
+    constructor(elementWidth, elementHeigth, elementDepth, wall, wallPosition) {
+        super(elementWidth, elementHeigth, elementDepth)
+        this.wall = wall
+        this.wallPosition = wallPosition
         this.fieldMaterial = new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide, // dwustronny
             map: new THREE.TextureLoader().load("../images/field_low_poly.jpg"), // plik tekstury
             transparent: true, // przezroczysty 
-            opacity: 1, // stopień przezroczystości
+            opacity: 0.5, // stopień przezroczystości
         })
-        this.geometry = new THREE.BoxGeometry(this.elementWidth, this.elementHeigth, this.elementDepth)
-        this.mesh = new THREE.Mesh(this.geometry, this.fieldMaterial) //TWORZYMY MESHA
-        this.generateSideCube() // GENERUJEMY
     }
-    generateSideCube() {
-        this.mesh.position.set(0, -(this.elementHeigth / 2), 0)
+    generateSidesCube() {
+        if (this.wall = "x") {
+            this.mesh.position.set(this.wallPosition, -(this.elementHeigth / 2), 0)
+        }
+        else if (this.wall = "z") {
+            this.mesh.position.set(0, -(this.elementHeigth / 2), this.wallPosition)
+        }
         return this.mesh
     }
 }
