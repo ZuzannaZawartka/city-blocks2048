@@ -4,16 +4,25 @@ import SideCube from "./SideCubes.js"
 import Light from "./Light.js"
 import Building from "./Building.js"
 import Queue from "./Queue.js"
+
 class Game {
     constructor() {
         this.scene = new THREE.Scene();
+        this.net = new Net();
+        this.ui = new Ui();
+        this.login = new Login(this.net, this.ui)
         this.init()
+
         window.addEventListener('mousedown', (e) => {
             this.mouseDown(e)
         })
+
     }
 
     init() {
+
+
+
         this.settingCamera() // Wywoływanie funckji początkowych do kamery, rendera i kreowania świata
         this.settingRenderer()
         this.creatingWorld()
