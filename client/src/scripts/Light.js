@@ -21,9 +21,9 @@ class Light {
         this.light.intensity = 1
         this.mesh = new THREE.Mesh(geometry, material)
         this.container.add(this.mesh)
-        this.container.position.x = 300
-        this.container.position.y = 50;
-        this.container.position.z = 300
+        this.container.position.x = 200
+        this.container.position.y = 300
+        this.container.position.z = 100
     }
 
     getLight() {

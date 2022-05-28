@@ -17,11 +17,12 @@ class Field {
     }
 
     setPosition() {
-        this.mesh.position.set(this.row, this.elementHeigth / 2, this.column) //TA TWOJA PIEKNA FUNKCJA OD USTALANIA POZYCJI
+        this.mesh.position.set(this.row, this.elementHeigth / 4, this.column) //TA TWOJA PIEKNA FUNKCJA OD USTALANIA POZYCJI
     }
 
     generate() {
         this.setPosition() // USTAWIAMY POZYCJĘ I ZWRACAMY
+        this.mesh.name = "field"
         return this.mesh
     }
 }
