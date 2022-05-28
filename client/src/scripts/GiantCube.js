@@ -3,7 +3,7 @@ class GiantCube {
         this.elementWidth = elementWidth
         this.elementHeigth = elementHeigth
         this.elementDepth = elementDepth
-        this.fieldMaterial = new THREE.MeshBasicMaterial({
+        this.fieldMaterial = new THREE.MeshPhongMaterial({
             side: THREE.DoubleSide, // dwustronny
             map: new THREE.TextureLoader().load("../images/dirt_low_poly.jpg"), // plik tekstury
             transparent: true, // przezroczysty / nie
