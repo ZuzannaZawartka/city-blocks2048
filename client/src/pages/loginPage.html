@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="loginPage.css">
     <script src="socket.io/socket.io.js"></script>
-    <script src="../scripts/Loggin.js"></script>
+
     <title>Login Page</title>
 </head>
 
@@ -16,14 +16,17 @@
     <h1 id="title">CITY-BLOCKS2048</h1>
     <p id="desc">Take over enemy buildings and conquer the world</p>
     <div id="form">
-        <input type="text">
+        <input type="text" id="nick">
         <button id="join_to_room">Join the room</button>
     </div>
 
     <script>
         const socket = io();
-    </script>
 
+
+
+    </script>
+    <script type="module" src="../scripts/Main.js"></script>
 </body>
 
 </html>
