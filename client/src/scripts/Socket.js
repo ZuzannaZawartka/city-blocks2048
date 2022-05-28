@@ -1,11 +1,10 @@
 
 class Socket {
 
-    constructor() {
-
+    constructor(socket) {
+        this.socket = socket
+        console.log(socket)
     }
-
-
 }
 
 export default Socket
