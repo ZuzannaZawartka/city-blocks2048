@@ -2,7 +2,8 @@ import Board from "./Board.js"
 import GiantCube from "./GiantCube.js"
 import SideCube from "./SideCubes.js"
 import Light from "./Light.js"
-import Login from "./Login.js"
+import Building from "./Building.js"
+import Queue from "./Queue.js"
 
 class Game {
     constructor() {
@@ -26,7 +27,7 @@ class Game {
         this.settingRenderer()
         this.creatingWorld()
         this.addingLight()
-        this.addingHouse()
+        this.createQueue()
         this.render() // wywołanie metody render
     }
 
@@ -39,10 +40,11 @@ class Game {
 
     settingCamera() {
         this.camera = new THREE.PerspectiveCamera(45, 4 / 3, 0.1, 10000); // Tworzenie kamery oraz ustawienie jej podst. parametrów
-        this.camera.position.x = 250;
-        this.camera.position.y = 230;
-        this.camera.position.z = 250;
-        this.camera.fov = 75;
+        this.camera.position.x = 1150
+        this.camera.position.y = 680
+        this.camera.position.z = 1150
+        this.camera.fov = 20
+        this.camera.lookAt(0, 0, 0)
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.angle = 0 // do obrotu kamery
@@ -68,28 +70,31 @@ class Game {
     }
 
     addingDecorationCubes() {
-        this.giantCube = new GiantCube(360, 360, 360) // generowanie dużego cuba pod boardem, jako dekoracja
+        this.giantCube = new GiantCube(720, 1920, 720) // generowanie dużego cuba pod boardem, jako dekoracja
         this.scene.add(this.giantCube.generateGiantCube()) // dodawanie do sceny funkcja zwraca mesha którego dodajemy
         this.addingDecorationSidesCubes()
     }
 
     addingDecorationSidesCubes() {
-        this.sideCubeQueue = new SideCube(250, 360, 80, 'z', 0, 220, 250) // generowanie dekoracyjnego bocznego cuba koło boarda
+        this.sideCubeQueue = new SideCube(350, 360, 80, 'z', -50, 450, 230) // generowanie dekoracyjnego bocznego cuba koło boarda
         this.scene.add(this.sideCubeQueue.generateSidesCube()) // dodawanie do sceny funkcja zwraca mesha którego dodajemy
 
-        this.sideCubeLongx = new SideCube(10, 360, 150, 'x', 186, 50, 200)
+        this.sideCubeLongx = new SideCube(10, 360, 150, 'x', 365, 50, 200)
         this.scene.add(this.sideCubeLongx.generateSidesCube())
 
-        this.sideCubeLongxMid = new SideCube(10, 340, 100, 'x', 196, 75, 220)
+        this.sideCubeLongxMid = new SideCube(20, 340, 100, 'x', 385, 75, 220)
         this.scene.add(this.sideCubeLongxMid.generateSidesCube())
 
-        this.sideCubeShortx = new SideCube(10, 250, 50, 'x', 186, -100, 250)
+        this.sideCubeLongx2 = new SideCube(30, 260, 120, 'x', 375, 220, 200)
+        this.scene.add(this.sideCubeLongx2.generateSidesCube())
+
+        this.sideCubeShortx = new SideCube(10, 250, 75, 'x', 385, -100, 250)
         this.scene.add(this.sideCubeShortx.generateSidesCube())
 
-        this.sideCubeShortxMid = new SideCube(10, 200, 30, 'x', 196, -100, 270)
+        this.sideCubeShortxMid = new SideCube(20, 200, 50, 'x', 405, -100, 270)
         this.scene.add(this.sideCubeShortxMid.generateSidesCube())
 
-        this.sideCubeSquarex = new SideCube(10, 50, 50, 'x', 186, -100, 50)
+        this.sideCubeSquarex = new SideCube(10, 300, 100, 'x', 395, -200, 200)
         this.scene.add(this.sideCubeSquarex.generateSidesCube())
     }
 
@@ -99,26 +104,15 @@ class Game {
         console.log(this.light.getLight())
     }
 
-    addingHouse() {
+    createQueue() {
+        //this.queue = new Queue(this.addingHouse(posX, posY, posZ), this.addingHouse(posX, posY, posZ), this.addingHouse(posX, posY, posZ))
+    }
+
+    addingHouse(posX, posY, posZ) {
         let lvl = this.generateRandomBuilding()
         let file = lvl + ".obj"
-        var manager = new THREE.LoadingManager();
-        manager.onProgress = function (item, loaded, total) {
-
-            console.log(item, loaded, total);
-
-        };
-        let scene = this.scene
-        var loader = new THREE.OBJLoader(manager);
-        var objpath = '../models/' + file;
-
-        loader.load(objpath, function (object) {
-            object.scale.x = 100;
-            object.scale.y = 100;
-            object.scale.z = 100;
-            object.position.set(0, 0, 0)
-            scene.add(object);
-        });
+        this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
+        return this.building
     }
 
     generateRandomBuilding() {
@@ -135,15 +129,15 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            console.log(this.intersects[0].object);
+            if (this.intersects[0].object.name == "field")
+                this.addingHouse(this.intersects[0].object.position.x, this.intersects[0].object.position.y, this.intersects[0].object.position.z);
         }
     }
 
     render = () => {
-        this.camera.position.x = Math.sin(this.angle) * 500
-        this.angle += 0.01 // obrót kamery
+        // this.camera.position.x = Math.sin(this.angle) * 500
+        // this.angle += 0.01 // obrót kamery
         this.renderer.render(this.scene, this.camera)
-        this.camera.lookAt(this.giantCube.mesh.position)
         this.camera.updateProjectionMatrix()
         requestAnimationFrame(this.render)
     }

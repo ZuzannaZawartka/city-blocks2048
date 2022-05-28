@@ -3,9 +3,9 @@ import Field from "./Field.js"
 class Board {
     constructor(scene) {
         this.scene = scene
-        this.elementWidth = 60
+        this.elementWidth = 120
         this.elementHeigth = 1
-        this.elementDepth = 60
+        this.elementDepth = 120
         this.fields = []
         this.generateBoard()
     }
