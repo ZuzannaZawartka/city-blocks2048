@@ -1,14 +1,24 @@
 import Board from "./Board.js"
 import GiantCube from "./GiantCube.js"
 import SideCube from "./SideCubes.js"
+import Login from "./Login.js"
+
 
 class Game {
     constructor() {
         this.scene = new THREE.Scene();
+        this.net = new Net();
+        this.ui = new Ui();
+        this.login = new Login(this.net, this.ui)
         this.init()
+
+
     }
 
     init() {
+
+
+
         this.settingCamera() // Wywoływanie funckji początkowych do kamery, rendera i kreowania świata
         this.settingRenderer()
         this.creatingWorld()
