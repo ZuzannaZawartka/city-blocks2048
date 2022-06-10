@@ -21,17 +21,25 @@
             height: 100%;
             display: flex;
         }
+
+        #form {
+            display: none;
+        }
     </style>
     <title>Login Page</title>
 </head>
 
 <body>
     <div id="root"></div>
+    <div id="form">
+        <input type="text" id="nick">
+        <button id="join_to_room">Join the room</button>
+    </div>
     <script src="../scripts/three.js"></script>
+    <script src="socket.io/socket.io.js"></script>
     <script src="../scripts/Main.js" type="module"></script>
     <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
     <script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
 </body>
-
 
 </html>
