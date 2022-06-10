@@ -1,8 +1,14 @@
 class Queue {
-    constructor(object1, object2, object3) {
-        this.first = object1
-        this.second = object2
-        this.third = object3
+    constructor(object1) {
+        this.object1 = object1
+    }
+
+    setQueueParams() {
+        this.setQueuePositionY()
+    }
+
+    setQueuePositionY() {
+        console.log(this.object1.posY)
     }
 }
 export default Queue

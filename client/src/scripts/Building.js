@@ -1,5 +1,6 @@
 class Building {
-    constructor(lvl, file, scene, posX, posY, posZ) {
+    constructor(lvl, file, scene, posX, posY, posZ, queue) {
+        this.queue = queue
         this.level = lvl
         this.file = file
         this.posX = posX
@@ -12,47 +13,39 @@ class Building {
     }
 
     loading() {
-        this.manager.onProgress = function (item, loaded, total) {
-
-            console.log(item, loaded, total)
-
-        };
-
         var objpath = '../models/' + this.file
 
         this.loader.load(objpath, (object) => this.load(object, this.lvl))
     }
 
     load(object) {
-        console.log(this.level)
         switch (this.level) {
             case 1:
-                this.setScale(30, object)
-                this.posY = 20
+                this.setScale(20, object)
+                this.posY += 20
                 break;
             case 2:
-                this.setScale(30, object)
-                this.posY = 20
+                this.setScale(20, object)
+                this.posY += 20
                 break;
             case 3:
-                this.setScale(30, object)
-                this.posY = 20
+                this.setScale(25, object)
+                this.posY += 20
                 break;
             case 4:
-                this.setScale(2, object)
+                this.setScale(1.75, object)
                 break;
             case 5:
-                this.setScale(2.5, object)
-                this.posY = 5
+                this.setScale(2, object)
+                this.posY += 5
                 break;
             case 6:
                 this.setScale(50, object)
-                this.posY = 10
+                this.posY += 10
                 break;
 
         }
         object.position.set(this.posX, this.posY, this.posZ)
-        console.log(object)
         this.scene.add(object)
     }
 
@@ -60,6 +53,7 @@ class Building {
         object.scale.x = scale
         object.scale.y = scale
         object.scale.z = scale
+        this.scale = object.scale.x
     }
 
     getBuilding() {

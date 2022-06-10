@@ -1,4 +1,4 @@
-//import Game from "./Game.js"
+import Game from "./Game.js"
 import Login from "./Login.js"
 import Net from "./Net.js"
 import Ui from "./Ui.js"
@@ -15,7 +15,7 @@ class Main {
         this.ui = new Ui()
         this.socketClass = new Socket(this.socket)
         this.login = new Login(this);
-        //this.game = new Game()
+        this.game = new Game()
     }
 
 }

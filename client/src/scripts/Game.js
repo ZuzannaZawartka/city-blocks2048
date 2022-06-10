@@ -4,6 +4,10 @@ import SideCube from "./SideCubes.js"
 import Light from "./Light.js"
 import Building from "./Building.js"
 import Queue from "./Queue.js"
+import Login from "./Login.js"
+import Net from "./Net.js"
+import Ui from "./Ui.js"
+import QueueFields from "./QueueFields.js"
 
 class Game {
     constructor() {
@@ -16,17 +20,14 @@ class Game {
         window.addEventListener('mousedown', (e) => {
             this.mouseDown(e)
         })
-
     }
 
     init() {
-
-
-
         this.settingCamera() // Wywoływanie funckji początkowych do kamery, rendera i kreowania świata
         this.settingRenderer()
         this.creatingWorld()
         this.addingLight()
+        this.addingQueueFields()
         this.createQueue()
         this.render() // wywołanie metody render
     }
@@ -66,7 +67,12 @@ class Game {
     addingBoard() {
         this.board = new Board(this.scene) // tworzenie planszy do gry oraz jej generowanie + dodanie
         this.board.generateBoard()
-        console.log(this.board)
+    }
+
+    addingQueueFields() {
+        this.queueFields = new QueueFields()
+        this.queueFieldsArray = this.queueFields.createQueueFields()
+        this.scene.add(this.queueFieldsArray)
     }
 
     addingDecorationCubes() {
@@ -101,11 +107,20 @@ class Game {
     addingLight() {
         this.light = new Light(this.GiantCube)
         this.scene.add(this.light.getLight())
-        console.log(this.light.getLight())
     }
 
     createQueue() {
-        //this.queue = new Queue(this.addingHouse(posX, posY, posZ), this.addingHouse(posX, posY, posZ), this.addingHouse(posX, posY, posZ))
+        this.generateQueueHouses()
+        this.queue = new Queue(this.queueHouses[0])
+        this.queue.setQueueParams()
+    }
+
+    generateQueueHouses() {
+        this.queueHouses = []
+        for (let i = 0; i < 3; i++) {
+            let house = this.addingHouse(this.queueFieldsArray.children[i].position.x, this.queueFieldsArray.children[i].position.y, this.queueFieldsArray.children[i].position.z)
+            this.queueHouses.push(house)
+        }
     }
 
     addingHouse(posX, posY, posZ) {
@@ -129,8 +144,11 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            if (this.intersects[0].object.name == "field")
-                this.addingHouse(this.intersects[0].object.position.x, this.intersects[0].object.position.y, this.intersects[0].object.position.z);
+            console.log(this.intersects[0].object)
+            if (this.intersects[0].object.geometry.type == "BufferGeometry") {
+                this.intersects[0].object.material.color.r = 255
+            }
+            //this.addingHouse(this.intersects[0].object.position.x, this.intersects[0].object.position.y, this.intersects[0].object.position.z);
         }
     }
 
