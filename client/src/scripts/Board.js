@@ -7,6 +7,7 @@ class Board {
         this.elementHeigth = 1
         this.elementDepth = 120
         this.fields = []
+        this.isFree
         this.generateBoard()
     }
 

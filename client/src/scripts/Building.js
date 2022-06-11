@@ -7,15 +7,14 @@ class Building {
         this.posY = posY
         this.posZ = posZ
         this.scene = scene
+        this.object = undefined
         this.manager = new THREE.LoadingManager()
         this.loader = new THREE.OBJLoader(this.manager)
-        this.loading()
     }
 
-    loading() {
+    async loading() {
         var objpath = '../models/' + this.file
-
-        this.loader.load(objpath, (object) => this.load(object, this.lvl))
+        await this.loader.load(objpath, (object) => this.load(object, this.lvl))
     }
 
     load(object) {
@@ -41,12 +40,19 @@ class Building {
                 break;
             case 6:
                 this.setScale(50, object)
-                this.posY += 10
+                this.posY += 20
                 break;
 
         }
         object.position.set(this.posX, this.posY, this.posZ)
+        this.object = object
         this.scene.add(object)
+    }
+
+    setPosition(x, y, z) {
+        this.object.position.x = x
+        this.object.position.y = y
+        this.object.position.z = z
     }
 
     setScale(scale, object) {
@@ -54,10 +60,6 @@ class Building {
         object.scale.y = scale
         object.scale.z = scale
         this.scale = object.scale.x
-    }
-
-    getBuilding() {
-        return this.building
     }
 }
 
