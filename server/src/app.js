@@ -32,6 +32,8 @@ app.post('/login', (req, res) => {
 
 })
 
+
+
 app.get('/game', (req, res) => {
     res.sendFile(path.join(__dirname, "../../client/src/pages/gamePage.html"));
 })

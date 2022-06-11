@@ -19,6 +19,8 @@ class Net {
         console.log(json)
 
     }
+
+
 }
 
 export default Net

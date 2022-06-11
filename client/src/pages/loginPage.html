@@ -5,23 +5,178 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="loginPage.css">
-    <script src="socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
 
+        #body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #root {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        #form {
+            display: none;
+        }
+
+        #bg_log {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            background-color: rgba(120, 120, 120, 0.2);
+        }
+
+        #window_log {
+            width: 30vw;
+            height: 30vh;
+            border: 2px dotted black;
+            border-bottom: 5px outset black;
+            border-right: 5px outset black;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background-color: rgba(60, 60, 10, 0.4);
+        }
+
+        #nick {
+            width: 60%;
+            height: 20%;
+            background-color: rgba(100, 100, 100, 0);
+            border: 0.5px ridge black;
+            border-radius: 10px;
+        }
+
+        #join_to_room {
+            margin-top: 5%;
+            width: 40%;
+            height: 20%;
+            background-color: fuchsia;
+            border: 2px solid black;
+            border-bottom: 4px solid black;
+            border-right: 4px solid black;
+        }
+
+        #title {
+            color: white;
+            position: absolute;
+
+
+
+
+        }
+
+        #opponent_text {
+            text-align: center;
+            color: white;
+            margin: 0 auto;
+
+        }
+
+        #window_score1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgba(120, 120, 120, 0.2);
+        }
+
+        #window_score2 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgba(120, 120, 120, 0.2);
+        }
+
+
+        #score_1 {
+            background-color: rgb(243, 241, 243);
+            width: 20vw;
+            height: 1.5vh;
+        }
+
+        #score_1_2 {
+            background-color: fuchsia;
+            width: 10vw;
+            height: 1.5vh;
+        }
+
+        #score_2 {
+            background-color: rgb(250, 246, 250);
+            width: 20vw;
+            height: 1.5vh;
+        }
+
+
+        #score_2_2 {
+            background-color: fuchsia;
+            width: 10vw;
+            height: 1.5vh;
+        }
+    </style>
     <title>Login Page</title>
 </head>
 
 <body>
-    <div id="root"></div>
-    <h1 id="title">CITY-BLOCKS2048</h1>
-    <p id="desc">Take over enemy buildings and conquer the world</p>
-    <div id="form">
-        <input type="text" id="nick">
-        <button id="join_to_room">Join the room</button>
+
+    <div id="root">
+        <div id="window_score1">
+            <h1>user1</h1>
+            <div id="score_1">
+                <div id="score_1_2"></div>
+            </div>
+
+
+        </div>
+        <div id="window_score2">
+            <h1>user2</h1>
+            <div id="score_2">
+                <div id="score_2_2"></div>
+            </div>
+
+
+
+
+        </div>
+        <div id="window_log">
+
+            <input id="nick" type="text">
+            <input id="join_to_room" type="submit" value="JOIN TO THE GAME">
+
+        </div>
+
+        <div id="bg_log">
+            <h1 id="opponent_text"></h1>
+        </div>
     </div>
 
 
-    <script type="module" src="../scripts/Main.js"></script>
+
+    <script src="../scripts/three.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="../scripts/Main.js" type="module"></script>
+    <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+    <script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
 </body>
 
 </html>
