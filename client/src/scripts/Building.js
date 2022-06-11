@@ -8,6 +8,7 @@ class Building {
         this.posZ = posZ
         this.scene = scene
         this.object = undefined
+        this.points = undefined
         this.manager = new THREE.LoadingManager()
         this.loader = new THREE.OBJLoader(this.manager)
     }
@@ -22,25 +23,31 @@ class Building {
             case 1:
                 this.setScale(20, object)
                 this.posY += 20
+                this.points = 50
                 break;
             case 2:
                 this.setScale(20, object)
                 this.posY += 20
+                this.points = 100
                 break;
             case 3:
                 this.setScale(25, object)
                 this.posY += 20
+                this.points = 150
                 break;
             case 4:
                 this.setScale(1.75, object)
+                this.points = 200
                 break;
             case 5:
                 this.setScale(2, object)
                 this.posY += 5
+                this.points = 250
                 break;
             case 6:
                 this.setScale(50, object)
                 this.posY += 20
+                this.points = 350
                 break;
 
         }

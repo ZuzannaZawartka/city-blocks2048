@@ -5,6 +5,8 @@ class Field {
         this.elementDepth = elementDepth
         this.row = row
         this.column = column
+        this.isTaken = false
+        this.placedBuilding = undefined
         this.fieldMaterial = new THREE.MeshPhongMaterial({
             side: THREE.DoubleSide, // dwustronny
             map: new THREE.TextureLoader().load("../images/field_low_poly.jpg"), // plik tekstury
