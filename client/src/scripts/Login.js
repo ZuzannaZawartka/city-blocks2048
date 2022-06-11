@@ -10,8 +10,9 @@ class Login {
         document.getElementById("join_to_room").addEventListener("click", async () => {
             if (this.IsUniqeName) {
                 console.log(this.main.socket)
-                this.main.socketClass.socket.emit("login", document.getElementById("nick").value);
-                let promise = await this.net.login()
+
+                this.main.socketClass.joinRoom(document.getElementById("nick").value)
+
             }
         })
     }

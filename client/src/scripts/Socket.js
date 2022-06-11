@@ -2,8 +2,14 @@
 class Socket {
 
     constructor(socket) {
+
         this.socket = socket
-        console.log(socket)
+
+
+    }
+
+    joinRoom(username) {
+        this.socket.emit('joinRoom', { username });
     }
 }
 

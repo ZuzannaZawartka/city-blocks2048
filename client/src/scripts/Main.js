@@ -7,9 +7,9 @@ import Socket from "./Socket.js"
 class Main {
     constructor() {
         const socket = io(); // podłączenie socektu do strony (jak wyswietla blad ze nie ma socketu to podepnij skrypt z loginPage)
-
+        let users = [];
+        let rooms = []
         this.socket = socket
-        this.users = []
 
         this.net = new Net()
         this.ui = new Ui()
