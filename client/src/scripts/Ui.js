@@ -15,12 +15,7 @@ class Ui {
     }
 
     delwaitingForOpponent() {
-        console.log("ODPLAAMY UI")
-        console.log(document.getElementById("bg_log"))
-        document.getElementById("opponent_text").innerHTML = "WAITING FOR OPPONENT"
-        document.getElementById("opponent_text").innerHTML = "CCD"
         document.getElementById("bg_log").style.display = "none"
-        console.log(document.getElementById("bg_log"))
     }
 }
 

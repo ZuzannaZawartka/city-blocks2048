@@ -22,6 +22,11 @@ class Socket {
             console.log("dzieje sie")
         });
 
+        this.socket.on('turn', (room) => {
+            this.socket.emit('turn', "WE START PLAY in room " + room);
+
+        });
+
     }
 
     joinRoom(username) {

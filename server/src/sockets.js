@@ -57,6 +57,11 @@ const socketsInit = (server) => {
             console.log(msg)
         });
 
+        socket.on('turn', () => {
+            console.log("Your turn")
+
+        });
+
 
         socket.on('disconnect', () => {
             const user = userLeave(socket.id);
