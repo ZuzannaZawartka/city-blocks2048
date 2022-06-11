@@ -3,6 +3,7 @@ class Socket {
     constructor(socket, ui) {
         this.socket = socket
         this.ui = ui
+        this.username = undefined
         this.init()
     }
 
@@ -16,10 +17,9 @@ class Socket {
         });
 
 
-        this.socket.on('play', (room) => {
-            this.socket.emit('message', "WE START PLAY in room " + room);
-            this.ui.delwaitingForOpponent()
-            console.log("dzieje sie")
+        this.socket.on('play', ({ user, users }) => {
+            this.socket.emit('message', "WE START PLAY in room " + user.room);
+            this.ui.delwaitingForOpponent(this.username, users)
         });
 
         this.socket.on('turn', (room) => {
@@ -30,8 +30,8 @@ class Socket {
     }
 
     joinRoom(username) {
+        this.username = username
         this.socket.emit('joinRoom', { username });
-
     }
 
 

@@ -29,7 +29,8 @@ const socketsInit = (server) => {
 
                 //sprawadfzamy czy mamy dwoch graczy w grupie
                 if (readyToPlay(user.room)) {
-                    io.to(user.room).emit('play', (user.room));
+                    let users = getRoomUsers(user.room)
+                    io.to(user.room).emit('play', ({ user, users }));
                 }
 
                 socket.broadcast
