@@ -6,7 +6,10 @@ const {
     getCurrentUser,
     userLeave,
     getToRoom,
-    getRoomUsers
+    getRoomUsers,
+    users,
+    rooms,
+    readyToPlay
 } = require('./users');
 
 
@@ -19,17 +22,21 @@ const socketsInit = (server) => {
         console.log('a user connected');
 
         socket.on("joinRoom", ({ username }) => {
+            console.log(username)
             const user = userJoin(socket.id, username);
             if (user) {
-
                 socket.join(user.room);
-                socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
+
+                //sprawadfzamy czy mamy dwoch graczy w grupie
+                if (readyToPlay(user.room)) {
+                    io.to(user.room).emit('play', (user.room));
+                }
 
                 socket.broadcast
                     .to(user.room)
                     .emit(
                         'message',
-                        formatMessage(botName, `${user.username} has joined the chat`)
+                        user.username + " has joined the chat"
                     );
 
                 io.to(user.room).emit('roomUsers', {
@@ -43,7 +50,11 @@ const socketsInit = (server) => {
         socket.on('chatMessage', msg => {
             const user = getCurrentUser(socket.id);
 
-            io.to(user.room).emit('message', formatMessage(user.username, msg));
+            io.to(user.room).emit('message',);
+        });
+
+        socket.on('message', msg => {
+            console.log(msg)
         });
 
 
@@ -53,7 +64,7 @@ const socketsInit = (server) => {
             if (user) {
                 io.to(user.room).emit(
                     'message',
-                    formatMessage(botName, `${user.username} has left the chat`)
+                    user.username + "has left the chat" + user.room
                 );
 
                 // Send users and room info
@@ -69,14 +80,11 @@ const socketsInit = (server) => {
 
     });
 
+
+
 }
 
 
-function formatMessage(username, text) {
-    return {
-        username,
-        text,
-    };
-}
+
 
 module.exports = socketsInit

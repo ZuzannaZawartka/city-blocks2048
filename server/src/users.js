@@ -1,10 +1,10 @@
-const users = [];
-const rooms = []
+let users = [];
+let rooms = []
 
 // Join user to chat
 function userJoin(id, username) {
     console.log(isUniqe(id))
-    if (isUniqe(id)) {
+    if (isUniqe(id, username)) {
         room = getToRoom(username).id
         const user = { id, username, room };
         users.push(user);
@@ -17,6 +17,7 @@ function isUniqe(id, username) {
     let flag = true
     if (users.length > 0) {
         users.forEach(user => {
+
             if (user.id == id || user.username == username) {
                 flag = false
             }
@@ -33,6 +34,14 @@ function isUniqe(id, username) {
 
 }
 
+function readyToPlay(room) {
+    console.log(rooms.find(rm => rm.id == room).users.length)
+    if (rooms.find(rm => rm.id == room).users.length != 2) {
+        return false
+    }
+    return true
+}
+
 // Get current user
 function getCurrentUser(id) {
     return users.find(user => user.id === id);
@@ -45,6 +54,7 @@ function userLeave(id) {
         return users.splice(index, 1)[0];
     }
 }
+
 
 function getToRoom(username) {
 
@@ -85,5 +95,6 @@ module.exports = {
     getToRoom,
     getRoomUsers,
     users,
-    rooms
+    rooms,
+    readyToPlay
 };

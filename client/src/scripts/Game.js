@@ -144,7 +144,7 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            console.log(this.intersects[0].object)
+            //   console.log(this.intersects[0].object)
             if (this.intersects[0].object.geometry.type == "BufferGeometry") {
                 this.intersects[0].object.material.color.r = 255
             }
