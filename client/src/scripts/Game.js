@@ -9,8 +9,10 @@ import Net from "./Net.js"
 import Ui from "./Ui.js"
 import QueueFields from "./QueueFields.js"
 
+
 class Game {
     constructor() {
+        this.queue
         this.scene = new THREE.Scene();
         this.net = new Net();
         this.ui = new Ui();
@@ -109,24 +111,28 @@ class Game {
         this.scene.add(this.light.getLight())
     }
 
-    createQueue() {
-        this.generateQueueHouses()
-        this.queue = new Queue(this.queueHouses[0])
-        this.queue.setQueueParams()
-    }
-
-    generateQueueHouses() {
-        this.queueHouses = []
+    async createQueue() {
+        this.housesQueue = []
         for (let i = 0; i < 3; i++) {
-            let house = this.addingHouse(this.queueFieldsArray.children[i].position.x, this.queueFieldsArray.children[i].position.y, this.queueFieldsArray.children[i].position.z)
-            this.queueHouses.push(house)
+            let building = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
+            //const House = new Queue(building)
+            this.housesQueue.push(building)
         }
     }
 
-    addingHouse(posX, posY, posZ) {
+    updateQueue() {
+        this.housesQueue[2] = this.housesQueue[1]
+        this.housesQueue[1].setPosition(this.queueFields.fieldsQ[0][2].position.x, this.queueFields.fieldsQ[0][2].position.y, this.queueFields.fieldsQ[0][2].position.z)
+        this.housesQueue[1] = this.housesQueue[0]
+        this.housesQueue[0].setPosition(this.queueFields.fieldsQ[0][1].position.x, this.queueFields.fieldsQ[0][1].position.y, this.queueFields.fieldsQ[0][1].position.z)
+        this.housesQueue[0] = this.addingHouse(this.queueFields.fieldsQ[0][0].position.x, this.queueFields.fieldsQ[0][0].position.y, this.queueFields.fieldsQ[0][0].position.z)
+    }
+
+    async addingHouse(posX, posY, posZ) {
         let lvl = this.generateRandomBuilding()
         let file = lvl + ".obj"
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
+        await this.building.loading()
         return this.building
     }
 
@@ -144,11 +150,10 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            //   console.log(this.intersects[0].object)
-            if (this.intersects[0].object.geometry.type == "BufferGeometry") {
-                this.intersects[0].object.material.color.r = 255
+            if (this.intersects[0].object.name == "field") {
+                this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.intersects[0].object.position.y, this.intersects[0].object.position.z)
+                this.updateQueue()
             }
-            //this.addingHouse(this.intersects[0].object.position.x, this.intersects[0].object.position.y, this.intersects[0].object.position.z);
         }
     }
 
