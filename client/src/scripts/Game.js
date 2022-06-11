@@ -39,6 +39,7 @@ class Game {
         this.renderer.setClearColor(0x1a1717);
         document.getElementById("root").append(this.renderer.domElement);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        window.addEventListener('resize', this.WindowResize, false);
     }
 
     settingCamera() {
@@ -120,12 +121,17 @@ class Game {
         }
     }
 
-    updateQueue() {
-        this.housesQueue[2] = this.housesQueue[1]
-        this.housesQueue[1].setPosition(this.queueFields.fieldsQ[0][2].position.x, this.queueFields.fieldsQ[0][2].position.y, this.queueFields.fieldsQ[0][2].position.z)
-        this.housesQueue[1] = this.housesQueue[0]
-        this.housesQueue[0].setPosition(this.queueFields.fieldsQ[0][1].position.x, this.queueFields.fieldsQ[0][1].position.y, this.queueFields.fieldsQ[0][1].position.z)
-        this.housesQueue[0] = this.addingHouse(this.queueFields.fieldsQ[0][0].position.x, this.queueFields.fieldsQ[0][0].position.y, this.queueFields.fieldsQ[0][0].position.z)
+    async updateQueue() {
+        for (let i = 2; i >= 0; i--) {
+            if (i == 0) {
+                this.housesQueue[i] = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
+            }
+            else {
+                this.housesQueue[i] = this.housesQueue[i - 1]
+                this.housesQueue[i - 1].setPosition(this.queueFields.fieldsQ[0][i].position.x, this.housesQueue[i - 1].posY, this.queueFields.fieldsQ[0][i].position.z)
+            }
+            console.log(this.housesQueue)
+        }
     }
 
     async addingHouse(posX, posY, posZ) {
@@ -150,8 +156,11 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            if (this.intersects[0].object.name == "field") {
-                this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.intersects[0].object.position.y, this.intersects[0].object.position.z)
+            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken) {
+                this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, this.intersects[0].object.position.z)
+                this.intersects[0].object.isTaken = true
+                this.intersects[0].object.placedBuilding = this.housesQueue[2]
+                console.log(this.intersects[0].object)
                 this.updateQueue()
             }
         }
@@ -160,6 +169,7 @@ class Game {
     render = () => {
         // this.camera.position.x = Math.sin(this.angle) * 500
         // this.angle += 0.01 // obrót kamery
+        window.addEventListener('resize', this.WindowResize, false);
         this.renderer.render(this.scene, this.camera)
         this.camera.updateProjectionMatrix()
         requestAnimationFrame(this.render)
