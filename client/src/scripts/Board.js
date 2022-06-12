@@ -7,7 +7,7 @@ class Board {
         this.elementHeigth = 1
         this.elementDepth = 120
         this.fields = []
-        this.isFree
+        this.boardFields = []
         this.generateBoard()
     }
 
@@ -17,10 +17,12 @@ class Board {
         let column = -(this.elementDepth * 2.5);
         for (let r = 0; r < 6; r++) { // tu masz rowsy
             this.fields[r] = []
+            this.boardFields[r] = []
             for (let c = 0; c < 6; c++) { // tu są columny
                 let boardField = new Field(this.elementWidth, this.elementHeigth, this.elementDepth, row, column) // TWORZYMY JEDNO POLE
                 let field = boardField.generate() // GENERUJEMY JE
                 this.fields[r][c] = field // PRZEKAZUJEMY DO TABILCY DWUWYMIAROWEJ NASZE POLE (DWU  WYMIAROWA, BO BĘDZIE ŁATWIEJ ODNALEŹĆ)
+                this.boardFields[r][c] = boardField
                 board.add(field) // DODAJEMY
                 row += this.elementWidth // ZWIĘKSZAMY WARTOŚCI DO POZYCJI O 30, BO MASZ 6 PÓL OD -90 DO 90 
             }

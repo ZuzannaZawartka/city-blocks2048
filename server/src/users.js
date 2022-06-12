@@ -19,12 +19,10 @@ function isUniqe(id, username) {
     let flag = true
     if (users.length > 0) {
         users.forEach(user => {
-
             if (user.id == id || user.username == username) {
                 flag = false
             }
         })
-
         if (flag) {
             return true
         } else {
@@ -51,8 +49,9 @@ function getCurrentUser(id) {
 
 // User leaves chat
 function userLeave(id) {
-    const index = users.findIndex(user => user.id === id);
 
+
+    const index = users.findIndex(user => user.id === id);
     try {
         rooms.find(rm => rm.id == users[index].room).users = rooms.find(rm => rm.id == users[index].room).users.filter(usr => usr != users[index].username)
     } catch (error) {
@@ -75,7 +74,6 @@ function getToRoom(username) {
         return rooms[0]
     } else {
         //jesli sa jakies pokoje sprawdzamy czy ostatni jest pełny
-
         let rm = rooms.find(rm => rm.users.length < 2)
         if (rm) {
             rm.users.push(username)
@@ -87,9 +85,6 @@ function getToRoom(username) {
             })
             return rooms[rooms.length - 1]
         }
-
-
-
         // if (rooms[rooms.length - 1].users.length < 2) {
         //     //jesli nie jest pelny dolaczamy
         //     rooms[rooms.length - 1].users.push(username)

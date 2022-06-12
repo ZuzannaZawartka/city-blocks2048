@@ -16,14 +16,17 @@ const {
 
 let botName = "Grzes"
 
+let board = "to jest nasz board na serwerze"
+
 const socketsInit = (server) => {
     io = new Server(server);
 
     io.on('connection', (socket) => {
         console.log('a user connected');
+        io.emit('users', users);
 
         socket.on("joinRoom", ({ username }) => {
-            console.log(username)
+            io.emit('users', users);
             const user = userJoin(socket.id, username);
             if (user) {
                 socket.join(user.room);
@@ -38,7 +41,7 @@ const socketsInit = (server) => {
                     socket.broadcast
                         .to(user.room)
                         .emit(
-                            'turn'
+                            'turn', board
                         );
                 }
 
@@ -67,12 +70,13 @@ const socketsInit = (server) => {
             console.log(msg)
         });
 
-        socket.on('turn', (username) => {
-            let user = users.find(usr => usr.username == username);
+        socket.on('turn', ({ username, board }) => {
 
+            console.log(board)
+            let user = users.find(usr => usr.username == username);
             //sprawdzamy czy gracze sa w pokoju
             if (checkRoom(user)) {
-                socket.broadcast.to(user.room).emit('turn');
+                socket.broadcast.to(user.room).emit('turn', board);
             } else {
                 io.to(user.room).emit('disconnectUser');
             }
