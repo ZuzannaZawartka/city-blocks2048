@@ -64,11 +64,10 @@ class Socket {
         if (!this.users.find(usr => usr.username == this.username)) {
             this.socket.emit('joinRoom', { username });
             return true
-        } else {
-            alert("Taki nick juz istnieje")
-            return false
         }
+        alert("Taki nick juz istnieje")
 
+        return false
     }
 
     nextTurn(board) {
