@@ -4,7 +4,7 @@ class Board {
     constructor(scene) {
         this.scene = scene
         this.elementWidth = 120
-        this.elementHeigth = 1
+        this.elementHeigth = 5
         this.elementDepth = 120
         this.fields = []
         this.boardFields = []
@@ -21,8 +21,7 @@ class Board {
             for (let c = 0; c < 6; c++) { // tu są columny
                 let boardField = new Field(this.elementWidth, this.elementHeigth, this.elementDepth, row, column) // TWORZYMY JEDNO POLE
                 let field = boardField.generate() // GENERUJEMY JE
-                this.fields[r][c] = field // PRZEKAZUJEMY DO TABILCY DWUWYMIAROWEJ NASZE POLE (DWU  WYMIAROWA, BO BĘDZIE ŁATWIEJ ODNALEŹĆ)
-                this.boardFields[r][c] = boardField
+                this.fields[r][c] = { field: field, class: boardField } // PRZEKAZUJEMY DO TABILCY DWUWYMIAROWEJ NASZE POLE (DWU  WYMIAROWA, BO BĘDZIE ŁATWIEJ ODNALEŹĆ)
                 board.add(field) // DODAJEMY
                 row += this.elementWidth // ZWIĘKSZAMY WARTOŚCI DO POZYCJI O 30, BO MASZ 6 PÓL OD -90 DO 90 
             }

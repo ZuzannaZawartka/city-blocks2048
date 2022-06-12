@@ -44,9 +44,22 @@ class Game {
         this.render() // wywołanie metody render
     }
 
+    resizeRendererToDisplaySize = (renderer) => {
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        // resize only when necessary
+        if (needResize) {
+            //3rd parameter `false` to change the internal canvas size
+            renderer.setSize(width, height, false);
+        }
+        return needResize;
+    };
+
     settingRenderer() {
         this.renderer = new THREE.WebGLRenderer(); // dodanie renderera, renderowanie na divie root i ustawienie rozmiaru i koloru tła
-        this.renderer.setClearColor(0x1a1717);
+        this.renderer.setClearColor("#1c1624");
         document.getElementById("root").append(this.renderer.domElement);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         window.addEventListener('resize', this.WindowResize, false);
@@ -80,6 +93,29 @@ class Game {
     addingBoard() {
         this.board = new Board(this.scene) // tworzenie planszy do gry oraz jej generowanie + dodanie
         this.board.generateBoard()
+    }
+
+    creatingBackground() {
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            map: loader.load(
+                "https://raw.githubusercontent.com/Kuntal-Das/textures/main/sp2.png"
+            ),
+            transparent: true
+            // color: 0x44aa88
+        });
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(getRandomParticelPos(350), 3)
+        );
+        const getRandomParticelPos = (particleCount) => {
+            const arr = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount; i++) {
+                arr[i] = (Math.random() - 0.5) * 10;
+            }
+            return arr;
+        };
     }
 
     addingQueueFields() {
@@ -123,6 +159,7 @@ class Game {
     }
 
     async createQueue() {
+        console.log(this.board.fields)
         this.housesQueue = []
         for (let i = 0; i < 3; i++) {
             let building = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
@@ -144,7 +181,6 @@ class Game {
                 }
                 this.housesQueue[i - 1].setPosition(this.queueFields.fieldsQ[0][i].position.x, this.housesQueue[i - 1].posY, positionZ)
             }
-            // / console.log(this.housesQueue)
         }
     }
 
@@ -176,6 +212,17 @@ class Game {
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
                 }
+
+                for (let k = 0; k < this.board.fields.length; k++) {
+                    for (let j = 0; j < this.board.fields[0].length; j++) {
+                        if (this.board.fields[k][j].field.uuid == this.intersects[0].object.uuid) {
+                            console.log("OKKK")
+                        }
+                    }
+                }
+
+                //console.log(this.board.fields.find(ele => ele.field.mesh.uuid == intersects[0].object.uuid))
+
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
                 this.intersects[0].object.isTaken = true
                 this.intersects[0].object.placedBuilding = this.housesQueue[2]
@@ -183,6 +230,7 @@ class Game {
                 this.updateQueue()
                 this.socket.nextTurn()
                 this.yourTurn = false
+                console.log(this.board.fieldsClasses)
             }
         }
     }
