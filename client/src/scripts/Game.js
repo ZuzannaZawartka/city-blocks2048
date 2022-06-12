@@ -31,8 +31,6 @@ class Game {
         window.addEventListener('mousedown', (e) => {
             if (this.yourTurn) {
                 this.mouseDown(e)
-                this.socket.nextTurn()
-                this.yourTurn = false
             }
         })
     }
@@ -176,6 +174,8 @@ class Game {
                 this.intersects[0].object.placedBuilding = this.housesQueue[2]
                 console.log(this.intersects[0].object)
                 this.updateQueue()
+                this.socket.nextTurn()
+                this.yourTurn = false
             }
         }
     }
@@ -196,6 +196,7 @@ class Game {
                 }
                 this.intersects[0].object.material.color.r = 255
                 this.selectedField = this.intersects[0].object
+
             }
         }
     }

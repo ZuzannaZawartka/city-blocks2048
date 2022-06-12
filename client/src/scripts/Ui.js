@@ -32,7 +32,7 @@ class Ui {
 
     noPlayers() {
         document.getElementById("bg_log").style.display = this.bg
-        document.getElementById("opponent_text").innerHTML = "your opponent is gone"
+        document.getElementById("opponent_text").innerHTML = "your opponent is gone, wait for player"
         document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
     }
 

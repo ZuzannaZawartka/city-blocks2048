@@ -6,6 +6,8 @@ function userJoin(id, username) {
     console.log(isUniqe(id))
     if (isUniqe(id, username)) {
         room = getToRoom(username).id
+        console.log("TO JEST GET TO ROOM")
+        console.log(room)
         const user = { id, username, room };
         users.push(user);
         return user;
@@ -73,18 +75,33 @@ function getToRoom(username) {
         return rooms[0]
     } else {
         //jesli sa jakies pokoje sprawdzamy czy ostatni jest pełny
-        if (rooms[rooms.length - 1].users.length < 2) {
-            //jesli nie jest pelny dolaczamy
-            rooms[rooms.length - 1].users.push(username)
-            return rooms[rooms.length - 1]
+
+        let rm = rooms.find(rm => rm.users.length < 2)
+        if (rm) {
+            rm.users.push(username)
+            return rm
         } else {
-            //jesli kazdy pokoj jest zajety tworzymy nowy
             rooms.push({
                 id: rooms.length,
                 users: [username]
             })
             return rooms[rooms.length - 1]
         }
+
+
+
+        // if (rooms[rooms.length - 1].users.length < 2) {
+        //     //jesli nie jest pelny dolaczamy
+        //     rooms[rooms.length - 1].users.push(username)
+        //     return rooms[rooms.length - 1]
+        // } else {
+        //     //jesli kazdy pokoj jest zajety tworzymy nowy
+        //     rooms.push({
+        //         id: rooms.length,
+        //         users: [username]
+        //     })
+        //     return rooms[rooms.length - 1]
+        // }
     }
 }
 
