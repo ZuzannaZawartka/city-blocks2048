@@ -20,6 +20,7 @@ class Game {
         this.socket = socket
         this.init()
         socket.start(this)
+        this.buildings = []
     }
 
     start() {
@@ -213,14 +214,19 @@ class Game {
                     positionZ += 20
                 }
                 let building;
+                let r, c
                 for (let k = 0; k < this.board.fields.length; k++) {
                     for (let j = 0; j < this.board.fields[0].length; j++) {
                         if (this.intersects[0].object.uuid == this.board.fields[k][j].mesh.uuid) {
                             building = this.board.fields[k][j]
+                            r = k
+                            c = j
                         }
                     }
                 }
 
+                this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
+                console.log(this.buildings)
                 //console.log(this.board.fields.find(ele => ele.field.mesh.uuid == intersects[0].object.uuid))
 
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
