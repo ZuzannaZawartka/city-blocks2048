@@ -18,6 +18,7 @@ class Game {
         this.ui = new Ui();
         this.socket = socket
         this.login = new Login(this.net, this.ui)
+        this.yourTurn = false;
         this.init()
         socket.start(this)
 
@@ -25,8 +26,11 @@ class Game {
 
     start() {
         window.addEventListener('mousedown', (e) => {
-            this.mouseDown(e)
-            this.socket.nextTurn()
+            if (this.yourTurn) {
+                this.mouseDown(e)
+                this.socket.nextTurn()
+                this.yourTurn = false
+            }
         })
     }
 

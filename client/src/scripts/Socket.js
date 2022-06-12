@@ -36,8 +36,14 @@ class Socket {
         });
 
         this.socket.on('turn', () => {
-            console.log("Moj ruch to jest gosciu")
             this.ui.delwaitingForOpponent()
+            this.game.yourTurn = true
+        });
+
+
+        this.socket.on('disconnectUser', () => {
+            this.isGameStarted = false
+            this.ui.noPlayers()
         });
 
     }

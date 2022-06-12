@@ -50,6 +50,12 @@ function getCurrentUser(id) {
 // User leaves chat
 function userLeave(id) {
     const index = users.findIndex(user => user.id === id);
+
+    try {
+        rooms.find(rm => rm.id == users[index].room).users = rooms.find(rm => rm.id == users[index].room).users.filter(usr => usr != users[index].username)
+    } catch (error) {
+    }
+
     if (index !== -1) {
         return users.splice(index, 1)[0];
     }
@@ -88,6 +94,13 @@ function getRoomUsers(room) {
     return rooms.find(rm => rm.id == room).users
 }
 
+function checkRoom(user, room) {
+    if (rooms.find(rm => rm.id == user.room).users.length != 2) {
+        return false
+    }
+    return true
+}
+
 module.exports = {
     userJoin,
     getCurrentUser,
@@ -96,5 +109,6 @@ module.exports = {
     getRoomUsers,
     users,
     rooms,
-    readyToPlay
+    readyToPlay,
+    checkRoom
 };

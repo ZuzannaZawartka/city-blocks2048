@@ -26,9 +26,17 @@ class Ui {
 
     waitingForTurn() {
         document.getElementById("bg_log").style.display = this.bg
-        document.getElementById("opponent_text").innerHTML = "WAITING FOR OPPONENT"
+        document.getElementById("opponent_text").innerHTML = "WAITING FOR TURN"
         document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
     }
+
+    noPlayers() {
+        document.getElementById("bg_log").style.display = this.bg
+        document.getElementById("opponent_text").innerHTML = "your opponent is gone"
+        document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
+    }
+
+
 
     delwaitingForOpponent() {
         document.getElementById("bg_log").style.display = "none"

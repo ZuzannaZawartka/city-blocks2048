@@ -9,7 +9,8 @@ const {
     getRoomUsers,
     users,
     rooms,
-    readyToPlay
+    readyToPlay,
+    checkRoom,
 } = require('./users');
 
 
@@ -68,8 +69,13 @@ const socketsInit = (server) => {
 
         socket.on('turn', (username) => {
             let user = users.find(usr => usr.username == username);
-            console.log(username)
-            socket.broadcast.to(user.room).emit('turn');
+
+            //sprawdzamy czy gracze sa w pokoju
+            if (checkRoom(user)) {
+                socket.broadcast.to(user.room).emit('turn');
+            } else {
+                io.to(user.room).emit('disconnectUser');
+            }
         });
 
 
@@ -78,8 +84,7 @@ const socketsInit = (server) => {
 
             if (user) {
                 io.to(user.room).emit(
-                    'message',
-                    user.username + "has left the chat" + user.room
+                    'disconnectUser'
                 );
 
                 // Send users and room info
