@@ -6,8 +6,10 @@ class Socket {
         this.username = undefined
         this.room = undefined
         this.isGameStarted = false
-        this.init()
         this.game = undefined
+        this.users = undefined
+        this.init()
+
     }
 
     start(game) {
@@ -19,6 +21,10 @@ class Socket {
             console.log(msg)
         });
 
+        this.socket.on('users', (msg) => {
+            this.users = msg
+        });
+
         this.socket.on('roomUsers', ({ room, users }) => {
 
             this.socket.emit('message', "room" + room + " users: " + users);
@@ -27,6 +33,7 @@ class Socket {
 
         this.socket.on('play', ({ user, users }) => {
             this.game.start()
+            this.users = users
             this.room = user.room
             this.socket.emit('message', "WE START PLAY in room " + user.room);
             this.isGameStarted = true
@@ -35,9 +42,10 @@ class Socket {
             this.ui.waitingForTurn()
         });
 
-        this.socket.on('turn', () => {
+        this.socket.on('turn', (board) => {
             this.ui.delwaitingForOpponent()
             this.game.yourTurn = true
+            console.log(board)
         });
 
 
@@ -50,13 +58,22 @@ class Socket {
 
     joinRoom(username) {
         this.username = username
-        this.socket.emit('joinRoom', { username });
+
+        if (!this.users.find(usr => usr.username == this.username)) {
+            this.socket.emit('joinRoom', { username });
+            return true
+        } else {
+            alert("Taki nick juz istnieje")
+            return false
+        }
+
     }
 
     nextTurn() {
         this.ui.waitingForTurn()
         let username = this.username
-        this.socket.emit('turn', username);
+        let board = "A TO DRUGI BOARD juz na kliencie"
+        this.socket.emit('turn', { username, board });
     }
 
 

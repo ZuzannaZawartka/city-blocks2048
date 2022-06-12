@@ -9,8 +9,10 @@ class Login {
     login() {
         document.getElementById("join_to_room").addEventListener("click", async () => {
             try {
-                this.main.socketClass.joinRoom((document.getElementById("nick").value).toString())
-                this.ui.hideLogin()
+                if (this.main.socketClass.joinRoom((document.getElementById("nick").value).toString())) {
+                    this.ui.hideLogin()
+                }
+                //
             } catch (error) { }
         })
     }

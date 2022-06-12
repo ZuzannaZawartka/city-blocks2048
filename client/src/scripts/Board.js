@@ -7,7 +7,7 @@ class Board {
         this.elementHeigth = 5
         this.elementDepth = 120
         this.fields = []
-        this.isFree
+        this.boardFields = []
         this.generateBoard()
     }
 
@@ -17,6 +17,7 @@ class Board {
         let column = -(this.elementDepth * 2.5);
         for (let r = 0; r < 6; r++) { // tu masz rowsy
             this.fields[r] = []
+            this.boardFields[r] = []
             for (let c = 0; c < 6; c++) { // tu są columny
                 let boardField = new Field(this.elementWidth, this.elementHeigth, this.elementDepth, row, column) // TWORZYMY JEDNO POLE
                 let field = boardField.generate() // GENERUJEMY JE

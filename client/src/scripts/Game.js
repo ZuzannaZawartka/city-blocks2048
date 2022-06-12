@@ -12,16 +12,14 @@ import QueueFields from "./QueueFields.js"
 
 class Game {
     constructor(socket) {
-        this.queue
         this.scene = new THREE.Scene();
         this.net = new Net();
         this.ui = new Ui();
-        this.socket = socket
         this.login = new Login(this.net, this.ui)
         this.yourTurn = false;
+        this.socket = socket
         this.init()
         socket.start(this)
-
     }
 
     start() {
@@ -189,7 +187,7 @@ class Game {
     async addingHouse(posX, posY, posZ) {
         let lvl = this.generateRandomBuilding()
         let file = lvl + ".obj"
-        console.log(file)
+        // console.log(file)
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         await this.building.loading()
         return this.building
@@ -209,7 +207,7 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken && document.getElementById("bg_log").style.display == "none") {
+            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken) {
                 let positionZ = this.intersects[0].object.position.z
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
@@ -247,7 +245,7 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken && document.getElementById("bg_log").style.display == "none") {
+            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken && this.yourTurn) {
                 if (this.selectedField != undefined) {
                     this.selectedField.material.color.r = 1
                 }
