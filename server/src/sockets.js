@@ -31,6 +31,14 @@ const socketsInit = (server) => {
                 if (readyToPlay(user.room)) {
                     let users = getRoomUsers(user.room)
                     io.to(user.room).emit('play', ({ user, users }));
+
+                    console.log("to jest ro ")
+                    console.log(user.room)
+                    socket.broadcast
+                        .to(user.room)
+                        .emit(
+                            'turn'
+                        );
                 }
 
                 socket.broadcast
@@ -58,9 +66,10 @@ const socketsInit = (server) => {
             console.log(msg)
         });
 
-        socket.on('turn', () => {
-            console.log("Your turn")
-
+        socket.on('turn', (username) => {
+            let user = users.find(usr => usr.username == username);
+            console.log(username)
+            socket.broadcast.to(user.room).emit('turn');
         });
 
 

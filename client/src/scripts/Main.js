@@ -15,7 +15,7 @@ class Main {
         this.ui = new Ui()
         this.socketClass = new Socket(this.socket, this.ui)
         this.login = new Login(this);
-        this.game = new Game()
+        this.game = new Game(this.socketClass)
     }
 
 }

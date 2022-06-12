@@ -4,7 +4,14 @@ class Socket {
         this.socket = socket
         this.ui = ui
         this.username = undefined
+        this.room = undefined
+        this.isGameStarted = false
         this.init()
+        this.game = undefined
+    }
+
+    start(game) {
+        this.game = game
     }
 
     init() {
@@ -13,18 +20,24 @@ class Socket {
         });
 
         this.socket.on('roomUsers', ({ room, users }) => {
+
             this.socket.emit('message', "room" + room + " users: " + users);
         });
 
 
         this.socket.on('play', ({ user, users }) => {
+            this.game.start()
+            this.room = user.room
             this.socket.emit('message', "WE START PLAY in room " + user.room);
-            this.ui.delwaitingForOpponent(this.username, users)
+            this.isGameStarted = true
+            this.ui.delwaitingForOpponent()
+            this.ui.setScore(this.username, users)
+            this.ui.waitingForTurn()
         });
 
-        this.socket.on('turn', (room) => {
-            this.socket.emit('turn', "WE START PLAY in room " + room);
-
+        this.socket.on('turn', () => {
+            console.log("Moj ruch to jest gosciu")
+            this.ui.delwaitingForOpponent()
         });
 
     }
@@ -32,6 +45,12 @@ class Socket {
     joinRoom(username) {
         this.username = username
         this.socket.emit('joinRoom', { username });
+    }
+
+    nextTurn() {
+        this.ui.waitingForTurn()
+        let username = this.username
+        this.socket.emit('turn', username);
     }
 
 

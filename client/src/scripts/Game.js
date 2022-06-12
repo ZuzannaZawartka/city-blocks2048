@@ -11,18 +11,25 @@ import QueueFields from "./QueueFields.js"
 
 
 class Game {
-    constructor() {
+    constructor(socket) {
         this.queue
         this.scene = new THREE.Scene();
         this.net = new Net();
         this.ui = new Ui();
+        this.socket = socket
         this.login = new Login(this.net, this.ui)
         this.init()
+        socket.start(this)
 
+    }
+
+    start() {
         window.addEventListener('mousedown', (e) => {
             this.mouseDown(e)
+            this.socket.nextTurn()
         })
     }
+
 
     init() {
         this.settingCamera() // Wywoływanie funckji początkowych do kamery, rendera i kreowania świata
