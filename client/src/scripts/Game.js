@@ -21,6 +21,7 @@ class Game {
         this.init()
         socket.start(this)
         this.buildings = []
+        this.buildingsAll = []
     }
 
     start() {
@@ -194,8 +195,22 @@ class Game {
         return this.building
     }
 
+    async addingHouseUpdate(posX, posY, posZ, lvl) {
+        let file = lvl + ".obj"
+        // console.log(file)
+        this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
+        await this.building.loading()
+        return this.building
+    }
+
     generateRandomBuilding() {
         return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+    }
+
+    clear() {
+        this.buildingsAll.forEach(element => {
+            element.object.children = []
+        })
     }
 
     mouseDown = (event) => {
@@ -208,30 +223,32 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken) {
+            this.building;
+            let r, c
+            for (let k = 0; k < this.board.fields.length; k++) {
+                for (let j = 0; j < this.board.fields[0].length; j++) {
+                    if (this.intersects[0].object.uuid == this.board.fields[k][j].mesh.uuid) {
+                        this.building = this.board.fields[k][j]
+                        r = k
+                        c = j
+                    }
+                }
+            }
+
+            if (this.intersects[0].object.name == "field" && !this.building.isTaken) {
                 let positionZ = this.intersects[0].object.position.z
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
                 }
-                let building;
-                let r, c
-                for (let k = 0; k < this.board.fields.length; k++) {
-                    for (let j = 0; j < this.board.fields[0].length; j++) {
-                        if (this.intersects[0].object.uuid == this.board.fields[k][j].mesh.uuid) {
-                            building = this.board.fields[k][j]
-                            r = k
-                            c = j
-                        }
-                    }
-                }
 
                 this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
+                this.buildingsAll.push(this.housesQueue[2])
                 //  console.log(this.buildings)
                 //console.log(this.board.fields.find(ele => ele.field.mesh.uuid == intersects[0].object.uuid))
 
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
-                building.isTaken = true
-                building.placedBuilding = this.housesQueue[2]
+                this.building.isTaken = true
+                this.building.placedBuilding = this.housesQueue[2]
                 //console.log(building)
                 //console.log(this.board.fields)
                 this.updateQueue()
@@ -251,7 +268,19 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken && this.yourTurn) {
+            this.building;
+            let r, c
+            for (let k = 0; k < this.board.fields.length; k++) {
+                for (let j = 0; j < this.board.fields[0].length; j++) {
+                    if (this.intersects[0].object.uuid == this.board.fields[k][j].mesh.uuid) {
+                        this.building = this.board.fields[k][j]
+                        r = k
+                        c = j
+                    }
+                }
+            }
+
+            if (this.intersects[0].object.name == "field" && !this.building.isTaken && this.yourTurn) {
                 if (this.selectedField != undefined) {
                     this.selectedField.material.color.r = 1
                 }
