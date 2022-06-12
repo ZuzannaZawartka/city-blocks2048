@@ -25,6 +25,9 @@ class Game {
     }
 
     start() {
+        window.addEventListener('mousemove', (e) => {
+            this.mousemove(e)
+        })
         window.addEventListener('mousedown', (e) => {
             if (this.yourTurn) {
                 this.mouseDown(e)
@@ -167,12 +170,32 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken) {
+            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken && document.getElementById("bg_log").style.display == "none") {
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, this.intersects[0].object.position.z)
                 this.intersects[0].object.isTaken = true
                 this.intersects[0].object.placedBuilding = this.housesQueue[2]
                 console.log(this.intersects[0].object)
                 this.updateQueue()
+            }
+        }
+    }
+
+    mousemove = (event) => {
+        this.raycaster = new THREE.Raycaster(); // obiekt Raycastera symulujący "rzucanie" promieni
+        this.mouseVector = new THREE.Vector2() // ten wektor czyli pozycja w przestrzeni 2D na ekranie(x,y) wykorzystany będzie do określenie pozycji myszy na ekranie, a potem przeliczenia na pozycje 3D
+
+        this.mouseVector.x = (event.clientX / innerWidth) * 2 - 1;
+        this.mouseVector.y = -(event.clientY / innerHeight) * 2 + 1;
+        this.raycaster.setFromCamera(this.mouseVector, this.camera);
+        this.intersects = this.raycaster.intersectObjects(this.scene.children);
+        if (this.intersects.length > 0) {
+            // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
+            if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken && document.getElementById("bg_log").style.display == "none") {
+                if (this.selectedField != undefined) {
+                    this.selectedField.material.color.r = 1
+                }
+                this.intersects[0].object.material.color.r = 255
+                this.selectedField = this.intersects[0].object
             }
         }
     }
