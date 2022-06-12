@@ -42,12 +42,14 @@ class Socket {
             this.ui.waitingForTurn()
         });
 
-        this.socket.on('turn', (board) => {
-
-            console.log("TUTAJ MUSI BYC ODSWIEZENIE")
+        this.socket.on('turn', async (board) => {
+            console.log(board)
+            if (board != undefined && board.length > 0)
+                board.forEach(element => {
+                    this.game.addingHouseUpdate(this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.x, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.y, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.z, element.level)
+                });
             this.ui.delwaitingForOpponent()
             this.game.yourTurn = true
-            console.log(board)
         });
 
 
@@ -76,8 +78,6 @@ class Socket {
 
         this.socket.emit('turn', { username, board });
     }
-
-
 }
 
 export default Socket
