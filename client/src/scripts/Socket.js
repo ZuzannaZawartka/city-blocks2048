@@ -44,6 +44,11 @@ class Socket {
 
         this.socket.on('turn', async (board) => {
             console.log(board)
+            if (this.game.buildingsAll.length > 0) {
+                this.game.buildingsAll.forEach(element => {
+                    this.game.scene.remove(element.object)
+                });
+            }
             if (board != undefined && board.length > 0)
                 board.forEach(element => {
                     this.game.addingHouseUpdate(this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.x, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.y, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.z, element.level)
