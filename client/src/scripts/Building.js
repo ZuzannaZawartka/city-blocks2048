@@ -21,31 +21,32 @@ class Building {
     load(object) {
         switch (this.level) {
             case 1:
-                this.setScale(20, object)
-                this.posY += 20
+                this.setScale(5, object)
+                console.log(object)
                 this.points = 50
                 break;
             case 2:
-                this.setScale(20, object)
-                this.posY += 20
+                this.setScale(0.25, object)
                 this.points = 100
                 break;
             case 3:
-                this.setScale(25, object)
-                this.posY += 20
+                this.setScale(30, object)
+                this.posZ += 20
+                this.posY += 9
                 this.points = 150
                 break;
             case 4:
-                this.setScale(1.75, object)
+                this.setScale(60, object)
+                this.posY += 20
                 this.points = 200
                 break;
             case 5:
-                this.setScale(2, object)
-                this.posY += 5
+                this.setScale(140, object)
+                this.posY += 20
                 this.points = 250
                 break;
             case 6:
-                this.setScale(50, object)
+                this.setScale(115, object)
                 this.posY += 20
                 this.points = 350
                 break;

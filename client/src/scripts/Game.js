@@ -138,7 +138,11 @@ class Game {
             }
             else {
                 this.housesQueue[i] = this.housesQueue[i - 1]
-                this.housesQueue[i - 1].setPosition(this.queueFields.fieldsQ[0][i].position.x, this.housesQueue[i - 1].posY, this.queueFields.fieldsQ[0][i].position.z)
+                let positionZ = this.queueFields.fieldsQ[0][i].position.z
+                if (this.housesQueue[i].level == 3) {
+                    positionZ += 20
+                }
+                this.housesQueue[i - 1].setPosition(this.queueFields.fieldsQ[0][i].position.x, this.housesQueue[i - 1].posY, positionZ)
             }
             console.log(this.housesQueue)
         }
@@ -147,6 +151,7 @@ class Game {
     async addingHouse(posX, posY, posZ) {
         let lvl = this.generateRandomBuilding()
         let file = lvl + ".obj"
+        console.log(file)
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         await this.building.loading()
         return this.building
@@ -167,7 +172,11 @@ class Game {
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
             if (this.intersects[0].object.name == "field" && !this.intersects[0].object.isTaken && document.getElementById("bg_log").style.display == "none") {
-                this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, this.intersects[0].object.position.z)
+                let positionZ = this.intersects[0].object.position.z
+                if (this.housesQueue[2].level == 3) {
+                    positionZ += 20
+                }
+                this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
                 this.intersects[0].object.isTaken = true
                 this.intersects[0].object.placedBuilding = this.housesQueue[2]
                 console.log(this.intersects[0].object)
