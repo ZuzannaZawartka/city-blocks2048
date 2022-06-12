@@ -212,11 +212,11 @@ class Game {
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
                 }
-
+                let building;
                 for (let k = 0; k < this.board.fields.length; k++) {
                     for (let j = 0; j < this.board.fields[0].length; j++) {
-                        if (this.board.fields[k][j].field.uuid == this.intersects[0].object.uuid) {
-                            console.log("OKKK")
+                        if (this.intersects[0].object.uuid == this.board.fields[k][j].mesh.uuid) {
+                            building = this.board.fields[k][j]
                         }
                     }
                 }
@@ -224,13 +224,13 @@ class Game {
                 //console.log(this.board.fields.find(ele => ele.field.mesh.uuid == intersects[0].object.uuid))
 
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
-                this.intersects[0].object.isTaken = true
-                this.intersects[0].object.placedBuilding = this.housesQueue[2]
-                console.log(this.intersects[0].object)
+                building.isTaken = true
+                building.placedBuilding = this.housesQueue[2]
+                console.log(building)
+                console.log(this.board.fields)
                 this.updateQueue()
                 this.socket.nextTurn()
                 this.yourTurn = false
-                console.log(this.board.fieldsClasses)
             }
         }
     }
