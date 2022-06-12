@@ -226,16 +226,16 @@ class Game {
                 }
 
                 this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
-                console.log(this.buildings)
+                //  console.log(this.buildings)
                 //console.log(this.board.fields.find(ele => ele.field.mesh.uuid == intersects[0].object.uuid))
 
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
                 building.isTaken = true
                 building.placedBuilding = this.housesQueue[2]
-                console.log(building)
-                console.log(this.board.fields)
+                //console.log(building)
+                //console.log(this.board.fields)
                 this.updateQueue()
-                this.socket.nextTurn()
+                this.socket.nextTurn(this.buildings)
                 this.yourTurn = false
             }
         }

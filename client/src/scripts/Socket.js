@@ -43,6 +43,8 @@ class Socket {
         });
 
         this.socket.on('turn', (board) => {
+
+            console.log("TUTAJ MUSI BYC ODSWIEZENIE")
             this.ui.delwaitingForOpponent()
             this.game.yourTurn = true
             console.log(board)
@@ -69,10 +71,10 @@ class Socket {
 
     }
 
-    nextTurn() {
+    nextTurn(board) {
         this.ui.waitingForTurn()
         let username = this.username
-        let board = "A TO DRUGI BOARD juz na kliencie"
+
         this.socket.emit('turn', { username, board });
     }
 
