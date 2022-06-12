@@ -10,7 +10,7 @@ class Main {
         let users = [];
         let rooms = []
         this.socket = socket
-
+        //gf
         this.net = new Net()
         this.ui = new Ui()
         this.socketClass = new Socket(this.socket, this.ui)
