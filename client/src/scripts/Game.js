@@ -195,9 +195,11 @@ class Game {
         return this.building
     }
 
-    async addingHouseUpdate(posX, posY, posZ, lvl) {
+    async addingHouseUpdate(posX, posY, posZ, lvl, row, column) {
         let file = lvl + ".obj"
         // console.log(file)
+        this.board.fields[row][column].isTaken = true
+        this.board.fields[row][column].lvl = lvl
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         await this.building.loading()
         console.log("ZWRACAMY OBIEKT")
@@ -208,10 +210,13 @@ class Game {
         return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
     }
 
-    clear() {
-        this.buildingsAll.forEach(element => {
-            element.object.children = []
-        })
+    clearFieldsData() {
+        for (let i = 0; i < this.board.fields.length; i++) {
+            for (let j = 0; j < this.board.fields[i].length; j++) {
+                this.board.fields[i][j].isTaken = false
+                this.board.fields[i][j].lvl = undefined
+            }
+        }
     }
 
     mouseDown = (event) => {
@@ -237,6 +242,7 @@ class Game {
             }
 
             if (this.intersects[0].object.name == "field" && !this.building.isTaken) {
+                this.board.fields[r][c].isTaken = true
                 let positionZ = this.intersects[0].object.position.z
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
@@ -252,7 +258,7 @@ class Game {
                 console.log(this.buildings)
                 this.building.placedBuilding = this.housesQueue[2]
                 //console.log(building)
-                //console.log(this.board.fields)
+                console.log(this.board.fields)
                 this.updateQueue()
                 this.socket.nextTurn(this.buildings)
                 this.yourTurn = false

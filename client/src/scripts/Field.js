@@ -6,6 +6,7 @@ class Field {
         this.row = row
         this.column = column
         this.isTaken = false
+        this.lvl = undefined
         this.placedBuilding = undefined
         this.fieldMaterial = new THREE.MeshPhongMaterial({
             side: THREE.DoubleSide, // dwustronny
