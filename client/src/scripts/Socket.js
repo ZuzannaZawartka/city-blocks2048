@@ -46,22 +46,18 @@ class Socket {
             if (board != undefined) {
                 this.game.buildings = board
             }
-            console.log(board)
-            console.log(this.game.buildings)
 
             if (this.game.buildingsAll.length > 0) {
                 this.game.buildingsAll.forEach(element => {
                     this.game.scene.remove(element.object)
                 });
                 this.game.clearFieldsData()
-                console.log(this.game.scene)
             }
             if (board != undefined && board.length > 0)
                 board.forEach(element => {
                     this.game.addingHouseUpdate(this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.x, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.y, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.z, element.level, element.fieldRow, element.fieldColumn)
                 });
 
-            console.log(this.game.scene)
             this.ui.delwaitingForOpponent()
             this.game.yourTurn = true
         });

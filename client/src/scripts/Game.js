@@ -22,6 +22,8 @@ class Game {
         socket.start(this)
         this.buildings = []
         this.buildingsAll = []
+        this.tab = []
+        this.endingElement == undefined;
     }
 
     start() {
@@ -202,7 +204,6 @@ class Game {
         this.board.fields[row][column].lvl = lvl
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         await this.building.loading()
-        console.log("ZWRACAMY OBIEKT")
         return this.building
     }
 
@@ -217,6 +218,92 @@ class Game {
                 this.board.fields[i][j].lvl = undefined
             }
         }
+    }
+
+    recursion = (field, row, column) => {
+
+
+        // console.log(this.board.fields[row + 1][column])
+        // console.log(this.board.fields[row - 1][column])
+
+        // console.log(this.board.fields[row][column + 1])
+        // console.log(this.board.fields[row][column - 1])
+
+
+        try {
+            console.log("row" + row)
+            console.log("column" + column)
+
+
+            if (this.board.fields[row + 1][column].lvl == this.building.lvl) {
+                this.endingElement = this.board.fields[row + 1][column]
+                this.tab.push(this.board.fields[row + 1][column])
+                //    console.log('NO COS JEST')
+                // return this.recursion(this.board.fields[row + 1][column], row + 1, column)
+                //  console.log(this.board.fields[row + 1][column], row + 1, column)
+
+            } if (this.board.fields[row - 1][column].lvl == this.building.lvl) {
+
+                this.endingElement = this.board.fields[row - 1][column]
+
+                //   console.log('NO COS JEST')
+                this.tab.push(this.board.fields[row - 1][column])
+                //  return this.recursion(this.board.fields[row - 1][column], row - 1, column)
+                //  console.log(this.board.fields[row - 1][column], row - 1, column)
+
+            }
+            if (this.board.fields[row][column - 1].lvl == this.building.lvl) {
+
+                this.endingElement = this.board.fields[row][column - 1]
+                this.tab.push(this.board.fields[row][column - 1])
+
+                //  console.log('NO COS JEST')
+                // return this.recursion(this.board.fields[row - 1][column], row, column - 1)
+                //  console.log(this.board.fields[row - 1][column], row, column - 1)
+
+
+
+            }
+            if (this.board.fields[row][column + 1].lvl == this.building.lvl) {
+
+                this.endingElement = this.board.fields[row][column + 1]
+                this.tab.push(this.board.fields[row][column + 1])
+
+                //  console.log('NO COS JEST')
+                //  return this.recursion(this.board.fields[row][column + 1], row, column + 1)
+                //   console.log(this.board.fields[row][column + 1], row, column + 1)
+
+
+            }
+
+
+            this.tab = []
+
+        } catch (error) {
+
+        }
+
+        // for (let i = -1; i < 2; i++) {
+        //     for (let j = -1; j < 2; j++) {
+        //         try {
+        //             if (this.board.fields[row + i][column + j].isTaken) {
+
+
+        //                 if (this.board.fields[row + i][column + j].lvl == this.building.lvl && this.board.fields[row + i][column + j] != this.building && !this.board.fields[row + i][column + j].isChecked) {
+
+        //                     this.board.fields[row + i][column + j].isChecked = true
+        //                     console.log(this.tab.find(el => el == this.board.fields[row + i][column + j]))
+        //                     this.recursion(this.board.fields[row + i][column + j], row + i, column + j)
+        //                     this.tab.push(this.board.fields[row + i][column + j])
+        //                     console.log(this.tab)
+        //                 }
+        //             }
+        //         } catch (error) {
+
+        //         }
+        //     }
+        // }
+
     }
 
     mouseDown = (event) => {
@@ -242,7 +329,7 @@ class Game {
             }
 
             if (this.intersects[0].object.name == "field" && !this.building.isTaken) {
-                this.board.fields[r][c].isTaken = true
+                // this.board.fields[r][c].isTaken = true
                 let positionZ = this.intersects[0].object.position.z
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
@@ -250,18 +337,20 @@ class Game {
 
                 this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
                 this.buildingsAll.push(this.housesQueue[2])
-                //  console.log(this.buildings)
-                //console.log(this.board.fields.find(ele => ele.field.mesh.uuid == intersects[0].object.uuid))
-
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
+
                 this.building.isTaken = true
-                console.log(this.buildings)
                 this.building.placedBuilding = this.housesQueue[2]
-                //console.log(building)
-                console.log(this.board.fields)
+                this.building.lvl = this.housesQueue[2].level
+
+
+
+                this.recursion(this.building, r, c)
+                console.log(this.tab)
                 this.updateQueue()
                 this.socket.nextTurn(this.buildings)
                 this.yourTurn = false
+
             }
         }
     }
@@ -307,6 +396,9 @@ class Game {
         this.camera.updateProjectionMatrix()
         requestAnimationFrame(this.render)
     }
+
+
+
 }
 
 export default Game

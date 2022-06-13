@@ -22,7 +22,7 @@ class Building {
         switch (this.level) {
             case 1:
                 this.setScale(5, object)
-                console.log(object)
+                // console.log(object)
                 this.points = 50
                 break;
             case 2:
