@@ -161,7 +161,7 @@ class Game {
     }
 
     async createQueue() {
-        console.log(this.board.fields)
+        // console.log(this.board.fields)
         this.housesQueue = []
         for (let i = 0; i < 3; i++) {
             let building = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
@@ -200,6 +200,7 @@ class Game {
         // console.log(file)
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         await this.building.loading()
+        console.log("ZWRACAMY OBIEKT")
         return this.building
     }
 
@@ -248,6 +249,7 @@ class Game {
 
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
                 this.building.isTaken = true
+                console.log(this.buildings)
                 this.building.placedBuilding = this.housesQueue[2]
                 //console.log(building)
                 //console.log(this.board.fields)

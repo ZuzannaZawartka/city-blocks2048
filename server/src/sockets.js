@@ -42,7 +42,7 @@ const socketsInit = (server) => {
                     socket.broadcast
                         .to(user.room)
                         .emit(
-                            'turn'
+                            'turn', []
                         );
                 }
 
@@ -73,7 +73,7 @@ const socketsInit = (server) => {
 
         socket.on('turn', ({ username, board }) => {
 
-            console.log(board)
+            console.log(board.length)
             boardOnServer = board
             let user = users.find(usr => usr.username == username);
             //sprawdzamy czy gracze sa w pokoju

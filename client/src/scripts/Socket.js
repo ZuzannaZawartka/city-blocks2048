@@ -42,17 +42,26 @@ class Socket {
             this.ui.waitingForTurn()
         });
 
-        this.socket.on('turn', async (board) => {
+        this.socket.on('turn', (board) => {
+            if (board != undefined) {
+                this.game.buildings = board
+            }
             console.log(board)
+            console.log(this.game.buildings)
+
             if (this.game.buildingsAll.length > 0) {
                 this.game.buildingsAll.forEach(element => {
                     this.game.scene.remove(element.object)
+
                 });
+                console.log(this.game.scene)
             }
             if (board != undefined && board.length > 0)
                 board.forEach(element => {
                     this.game.addingHouseUpdate(this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.x, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.y, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.z, element.level)
                 });
+
+            console.log(this.game.scene)
             this.ui.delwaitingForOpponent()
             this.game.yourTurn = true
         });
@@ -80,7 +89,6 @@ class Socket {
     nextTurn(board) {
         this.ui.waitingForTurn()
         let username = this.username
-
         this.socket.emit('turn', { username, board });
     }
 }
