@@ -64,7 +64,7 @@ class Game {
 
     settingRenderer() {
         this.renderer = new THREE.WebGLRenderer(); // dodanie renderera, renderowanie na divie root i ustawienie rozmiaru i koloru tła
-        this.renderer.setClearColor("#1c1624");
+        this.renderer.setClearColor("#4f5a32");
         document.getElementById("root").append(this.renderer.domElement);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         window.addEventListener('resize', this.WindowResize, false);
