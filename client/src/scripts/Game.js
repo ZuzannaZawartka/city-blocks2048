@@ -335,7 +335,14 @@ class Game {
 
                     this.ui.showPoints(this.scoreP1, this.scoreP2)
 
+
+                    this.buildings.push({ level: this.housesQueue[2].level + 1, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
                 }
+
+
+
+
+                this.addingHouseUpdate(this.building.posX, this.building.posY, this.building.posZ, this.building.level, this.building.fieldRow, this.building.fieldColumn)
 
                 this.deleteElementsFromScene(this.scene.children)
                 this.socket.nextTurn(this.buildings, this.scoreP1)
