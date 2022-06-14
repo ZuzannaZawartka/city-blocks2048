@@ -42,7 +42,11 @@ class Socket {
             this.ui.waitingForTurn()
         });
 
-        this.socket.on('turn', (board) => {
+        this.socket.on('turn', (board, score) => {
+
+            this.game.scoreP2 = score
+            this.game.ui.showPoints(this.game.scoreP1, score)
+
 
             this.game.scene.children.forEach(e => {
                 if (e.name == "build") {
@@ -93,10 +97,10 @@ class Socket {
         return false
     }
 
-    nextTurn(board) {
+    nextTurn(board, score) {
         this.ui.waitingForTurn()
         let username = this.username
-        this.socket.emit('turn', { username, board });
+        this.socket.emit('turn', { username, board, score });
 
     }
 }

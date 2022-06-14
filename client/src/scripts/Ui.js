@@ -58,12 +58,21 @@ class Ui {
     }
 
     showPoints(points1, points2) {
-        let proportion1 = (points1 * 20) / 3000
-        let proportion2 = (points2 * 20) / 3000
-        document.getElementById('score_1_num').style.innerHTML = points1
-        document.getElementById('score_2_num').style.innerHTML = points2
-        document.getElementById('score_1_2').style.width += `${proportion1}vw`
-        document.getElementById('score_2_2').style.width += `${proportion2}vw`
+
+        let maxScore = 3000
+        console.log("SET POINTS")
+        let proportion1 = (points1 * 20) / maxScore
+        let proportion2 = (points2 * 20) / maxScore
+
+        console.log(proportion1)
+        console.log(proportion2)
+
+        document.getElementById('score_1_num').innerHTML = points1
+        document.getElementById('score_2_num').innerHTML = points2
+        document.getElementById('score_1_2').style.width = `${proportion1}vw`
+        document.getElementById('score_2_2').style.width = `${proportion2}vw`
+
+        console.log(document.getElementById('score_1_2').style.width)
     }
 }
 
