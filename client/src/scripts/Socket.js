@@ -97,6 +97,7 @@ class Socket {
     }
 
     nextTurn(board, score) {
+
         this.ui.waitingForTurn()
         let username = this.username
         this.socket.emit('turn', { username, board, score });
