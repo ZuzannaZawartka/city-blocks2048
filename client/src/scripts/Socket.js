@@ -43,6 +43,8 @@ class Socket {
         });
 
         this.socket.on('turn', (board, score) => {
+
+            this.game.deleteElementsFromScene(this.game.scene.children)
             this.game.firstTurn = true
             this.game.scoreP2 = score
             this.game.ui.showPoints(this.game.scoreP1, score)
@@ -76,6 +78,21 @@ class Socket {
             this.game.yourTurn = true
         });
 
+        this.socket.on('endGame', ({ points, opoints }) => {
+            //this.isGameStarted = false
+            console.log("KONIEC GRY")
+            if (opoints > points) {
+                this.ui.winWindow(points, opoints)
+
+            } else {
+                this.ui.looseWindow(points, opoints)
+            }
+            console.log(points + "/" + opoints)
+
+            this.game.yourTurn = false
+        });
+
+
 
         this.socket.on('disconnectUser', () => {
             this.isGameStarted = false
@@ -99,8 +116,23 @@ class Socket {
     nextTurn(board, score) {
 
         this.ui.waitingForTurn()
+        this.game.deleteElementsFromScene(this.game.scene.children)
         let username = this.username
         this.socket.emit('turn', { username, board, score });
+
+    }
+
+    endGame(points, opoints) {
+
+        console.log(points + " " + opoints)
+        // this.ui.winWindow(points, opoints)
+        if (points > opoints) {
+            this.ui.winWindow(points, opoints)
+
+        } else {
+            this.ui.looseWindow(points, opoints)
+        }
+        this.socket.emit('endGame', ({ points, opoints }));
 
     }
 }

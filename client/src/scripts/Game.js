@@ -27,7 +27,7 @@ class Game {
         this.endingElement == undefined;
         this.scoreP1 = 0
         this.scoreP2 = 0
-        this.maxScore
+        this.maxScore = 3000
         this.firstTurn = false
     }
 
@@ -318,6 +318,13 @@ class Game {
                 }
             }
 
+
+            //Gdy nie ma juz miejsca na tablicy
+            if (this.board.checkFreePlaces() >= this.board.allElements) {
+                this.socket.endGame(this.scoreP1, this.scoreP2)
+                this.yourTurn = false
+            }
+
             if (this.intersects[0].object.name == "field" && !this.building.isTaken) {
                 // this.board.fields[r][c].isTaken = true
                 let positionZ = this.intersects[0].object.position.z
@@ -337,11 +344,19 @@ class Game {
 
                 this.recTab = []
                 this.recursion(this.building, r, c)
-                console.log(this.recTab)
+
 
                 if (this.recTab.length >= 3) {
                     //przyznanie punktow za zgranie domkow
                     this.scoreP1 += (this.recTab.length * this.recTab[0].placedBuilding.points)
+
+
+                    //sprawdzenie czy nie mamy maksymalnej ilosci puntkow
+                    if (this.scoreP1 >= this.maxScore) {
+                        this.socket.endGame(this.scoreP1, this.scoreP2)
+                        this.yourTurn = false
+
+                    }
                     //usuniecie elementow 
                     this.recTab.forEach(element => {
                         let i = this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn)
@@ -364,15 +379,21 @@ class Game {
                 }
 
 
-
-
+                if (this.board.checkFreePlaces() >= this.board.allElements) {
+                    this.socket.endGame(this.scoreP1, this.scoreP2)
+                    this.yourTurn = false
+                }
 
 
                 this.deleteElementsFromScene(this.scene.children)
-                this.socket.nextTurn(this.buildings, this.scoreP1)
+                if (this.yourTurn) {
+                    this.socket.nextTurn(this.buildings, this.scoreP1)
+                }
+
                 this.yourTurn = false
 
             }
+
         }
     }
 
