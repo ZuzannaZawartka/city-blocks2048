@@ -303,6 +303,13 @@ class Game {
                 }
             }
 
+
+            //Gdy nie ma juz miejsca na tablicy
+            if (this.board.checkFreePlaces() >= this.board.allElements) {
+                this.socket.endGame(this.scoreP1, this.scoreP2)
+                this.yourTurn = false
+            }
+
             if (this.intersects[0].object.name == "field" && !this.building.isTaken) {
                 // this.board.fields[r][c].isTaken = true
                 let positionZ = this.intersects[0].object.position.z
@@ -324,22 +331,13 @@ class Game {
                 this.recursion(this.building, r, c)
 
 
-
-                console.log(this.scoreP1)
-                console.log(this.scoreP2)
-
-
                 if (this.recTab.length >= 3) {
                     //przyznanie punktow za zgranie domkow
                     this.scoreP1 += (this.recTab.length * this.recTab[0].placedBuilding.points)
 
 
-                    console.log(this.scoreP1)
+                    //sprawdzenie czy nie mamy maksymalnej ilosci puntkow
                     if (this.scoreP1 >= this.maxScore) {
-                        console.log("END GAME")
-
-
-
                         this.socket.endGame(this.scoreP1, this.scoreP2)
                         this.yourTurn = false
 
@@ -365,6 +363,13 @@ class Game {
 
                 }
 
+
+                if (this.board.checkFreePlaces() >= this.board.allElements) {
+                    this.socket.endGame(this.scoreP1, this.scoreP2)
+                    this.yourTurn = false
+                }
+
+
                 this.deleteElementsFromScene(this.scene.children)
                 if (this.yourTurn) {
                     this.socket.nextTurn(this.buildings, this.scoreP1)
@@ -373,6 +378,7 @@ class Game {
                 this.yourTurn = false
 
             }
+
         }
     }
 

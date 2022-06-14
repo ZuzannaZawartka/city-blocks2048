@@ -81,8 +81,14 @@ class Socket {
         this.socket.on('endGame', ({ points, opoints }) => {
             //this.isGameStarted = false
             console.log("KONIEC GRY")
+            if (opoints > points) {
+                this.ui.winWindow(points, opoints)
+
+            } else {
+                this.ui.looseWindow(points, opoints)
+            }
             console.log(points + "/" + opoints)
-            this.ui.looseWindow(points, opoints)
+
             this.game.yourTurn = false
         });
 
@@ -119,7 +125,13 @@ class Socket {
     endGame(points, opoints) {
 
         console.log(points + " " + opoints)
-        this.ui.winWindow(points, opoints)
+        // this.ui.winWindow(points, opoints)
+        if (points > opoints) {
+            this.ui.winWindow(points, opoints)
+
+        } else {
+            this.ui.looseWindow(points, opoints)
+        }
         this.socket.emit('endGame', ({ points, opoints }));
 
     }

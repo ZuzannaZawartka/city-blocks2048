@@ -8,6 +8,8 @@ class Board {
         this.elementDepth = 120
         this.fields = []
         this.boardFields = []
+        this.allElements = 0
+        this.taken = 0;
     }
 
     generateBoard() {
@@ -31,6 +33,22 @@ class Board {
         }
         board.position.set(0, 0, 0)
         this.scene.add(board) //DODAJEMY DO SCENY
+    }
+
+
+
+    checkFreePlaces() {
+        this.allElements = 0;
+        this.taken = 0
+        for (let i = 0; i < this.fields[0].length; i++) {
+            for (let j = 0; j < this.fields[0].length; j++) {
+                if (this.fields[i][j].isTaken == true) {
+                    this.taken++
+                }
+                this.allElements++
+            }
+        }
+        return this.taken
     }
 }
 export default Board
