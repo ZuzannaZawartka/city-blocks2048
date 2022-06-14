@@ -25,7 +25,9 @@ class Game {
         this.recTab = []
         this.tab = []
         this.endingElement == undefined;
-        this.score = 0
+        this.scoreP1 = 0
+        this.scoreP2 = 0
+
     }
 
     start() {
@@ -37,6 +39,8 @@ class Game {
                 this.mouseDown(e)
             }
         })
+
+        this.ui.showPoints(this.scoreP1, this.scoreP2)
     }
 
 
@@ -169,6 +173,8 @@ class Game {
         this.housesQueue = []
         for (let i = 0; i < 3; i++) {
             let building = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
+
+            //building.object.name = "queue"
             //const House = new Queue(building)
 
             this.housesQueue.push(building)
@@ -179,6 +185,7 @@ class Game {
         for (let i = 2; i >= 0; i--) {
             if (i == 0) {
                 this.housesQueue[i] = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
+                //this.housesQueue[i].object.name = "queue"
             }
             else {
                 this.housesQueue[i] = this.housesQueue[i - 1]
@@ -208,9 +215,13 @@ class Game {
 
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         this.board.fields[row][column].placedBuilding = this.building
+        //this.board.fields[row][column].placedBuilding.object.name = "build"
+
         await this.building.loading()
         return this.building
     }
+
+
 
     generateRandomBuilding() {
         return Math.floor(Math.random() * (1 - 1 + 1)) + 1;
@@ -289,6 +300,7 @@ class Game {
     }
 
     mouseDown = (event) => {
+
         this.raycaster = new THREE.Raycaster(); // obiekt Raycastera symulujący "rzucanie" promieni
         this.mouseVector = new THREE.Vector2() // ten wektor czyli pozycja w przestrzeni 2D na ekranie(x,y) wykorzystany będzie do określenie pozycji myszy na ekranie, a potem przeliczenia na pozycje 3D
 
@@ -297,7 +309,7 @@ class Game {
         this.raycaster.setFromCamera(this.mouseVector, this.camera);
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
-            // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
+            // zerowy w tablicy czyli Wnajbliższy kamery obiekt to ten, którego potrzebujemy:
 
             this.building;
             let r, c
@@ -316,65 +328,34 @@ class Game {
                 let positionZ = this.intersects[0].object.position.z
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
+                    console.log(this.housesQueue[2].object.name)
                 }
-
-
                 this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
                 this.buildingsAll.push(this.housesQueue[2])
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
-                this.ui.showPoints(300, 600)
+
                 this.building.isTaken = true
                 this.building.placedBuilding = this.housesQueue[2]
                 this.building.lvl = this.housesQueue[2].level
 
 
+                //  this.scene.children.find(elem => elem.uuid == this.building.placedBuilding.object.uuid).name = "build"
+
                 this.recTab = []
                 this.recursion(this.building, r, c)
-                //console.log(this.buildings)
-                //console.log(this.scene.children)
-                //sprawdzenie czy mamy wiecej niz 3 elementy obok siebie
-                // console.log(this.buildings)
-                // console.log(this.buildings)
                 if (this.recTab.length >= 3) {
-
+                    //przyznanie punktow za zgranie domkow
+                    this.scoreP1 += (this.recTab.length * this.recTab[0].placedBuilding.points)
                     //usuniecie elementow 
                     this.recTab.forEach(element => {
-                        //console.log(this.scene.children.find(e => e.uuid == element.placedBuilding.object.uuid))
-
                         let i = this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn)
-
-
                         this.buildings = this.buildings.filter(e => e != i)
-                        //let ex = this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn)
-                        //console.log(this.buildings)
-                        // this.buildings.filter(e => e != this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn))
-
-                        // console.log(this.buildings.find(el => el.posX == element.placedBuilding.posX && el.posY == element.placedBuilding.posY && el.posZ == element.placedBuilding.posZ))
-
-                        // console.log(this.buildings.filter(el => el.posX == element.placedBuilding.posX && el.posY != element.placedBuilding.posY && el.posZ != element.placedBuilding.posZ))
-                        // //this.buildings = this.buildings.filter(el => el.posX == element.placedBuilding.posX && el.posY == element.placedBuilding.posY && el.posZ == element.placedBuilding.posZ)
-                        // console.log(this.buildings)
-                        // e.isTaken = false
-                        // e.lvl = undefined
-
-                        // console.log(this.scene.children.length)
-                        this.scene.remove(element.placedBuilding.object)
-                        // this.scene = this.scene.filter(e => e !=)
-                        // console.log(this.scene.children)
-                        //console.log(this.scene.children.length)
                     });
 
-                    console.log(this.scene.children)
-                    //  console.log(this.buildings)
-                    //console.log(this.buildings)
+                    this.ui.showPoints(this.scoreP1, this.scoreP2)
+
                 }
-                //   console.log(this.recTab)
-
-
-
-
-                this.updateQueue()
-                this.socket.nextTurn(this.buildings)
+                this.socket.nextTurn(this.buildings, this.scoreP1)
                 this.yourTurn = false
 
             }

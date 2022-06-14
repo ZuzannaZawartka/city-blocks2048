@@ -18,6 +18,7 @@ let botName = "Grzes"
 
 let boardOnServer;
 let boards = []
+let scorex = 0;
 
 const socketsInit = (server) => {
     io = new Server(server);
@@ -42,7 +43,7 @@ const socketsInit = (server) => {
                     socket.broadcast
                         .to(user.room)
                         .emit(
-                            'turn', []
+                            'turn', [], scorex
                         );
                 }
 
@@ -71,14 +72,14 @@ const socketsInit = (server) => {
             console.log(msg)
         });
 
-        socket.on('turn', ({ username, board }) => {
+        socket.on('turn', ({ username, board, score }) => {
 
             console.log(board.length)
             boardOnServer = board
             let user = users.find(usr => usr.username == username);
             //sprawdzamy czy gracze sa w pokoju
             if (checkRoom(user)) {
-                socket.broadcast.to(user.room).emit('turn', boardOnServer);
+                socket.broadcast.to(user.room).emit('turn', boardOnServer, score);
             } else {
                 io.to(user.room).emit('disconnectUser');
             }
