@@ -27,6 +27,7 @@ class Game {
         this.endingElement == undefined;
         this.scoreP1 = 0
         this.scoreP2 = 0
+        this.maxScore
 
     }
 
@@ -224,7 +225,9 @@ class Game {
 
 
     generateRandomBuilding() {
-        return Math.floor(Math.random() * (1 - 1 + 1)) + 1;
+        let x = Math.floor(Math.random() * (6 - 1)) + 1;
+        console.log(x)
+        return x;
     }
 
     clearFieldsData() {
@@ -355,6 +358,8 @@ class Game {
                     this.ui.showPoints(this.scoreP1, this.scoreP2)
 
                 }
+
+                this.updateQueue()
                 this.socket.nextTurn(this.buildings, this.scoreP1)
                 this.yourTurn = false
 
