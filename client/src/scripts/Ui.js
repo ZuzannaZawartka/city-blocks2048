@@ -26,19 +26,19 @@ class Ui {
     }
 
     waitingForOpponent() {
-        document.getElementById("opponent_text").innerHTML = "WAITING FOR OPPONENT"
+        document.getElementById("opponent_text").innerHTML = "Waiting for opponent"
         document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
     }
 
     waitingForTurn() {
         document.getElementById("bg_log").style.display = this.bg
-        document.getElementById("opponent_text").innerHTML = "WAITING FOR TURN"
+        document.getElementById("opponent_text").innerHTML = "Waiting for turn"
         document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
     }
 
     noPlayers() {
         document.getElementById("bg_log").style.display = this.bg
-        document.getElementById("opponent_text").innerHTML = "your opponent is gone, wait for player"
+        document.getElementById("opponent_text").innerHTML = "Your opponent is gone, wait for player"
         document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
     }
 
@@ -55,6 +55,15 @@ class Ui {
         document.getElementById('window_score2').style.display = this.w2_displayed
         document.getElementById('nick1').innerText = user
         document.getElementById('nick2').innerText = users.filter(usr => usr != user)[0]
+    }
+
+    showPoints(points1, points2) {
+        let proportion1 = (points1 * 20) / 3000
+        let proportion2 = (points2 * 20) / 3000
+        document.getElementById('score_1_num').style.innerHTML = points1
+        document.getElementById('score_2_num').style.innerHTML = points2
+        document.getElementById('score_1_2').style.width += `${proportion1}vw`
+        document.getElementById('score_2_2').style.width += `${proportion2}vw`
     }
 }
 

@@ -25,6 +25,7 @@ class Game {
         this.recTab = []
         this.tab = []
         this.endingElement == undefined;
+        this.score = 0
     }
 
     start() {
@@ -321,7 +322,7 @@ class Game {
                 this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
                 this.buildingsAll.push(this.housesQueue[2])
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
-
+                this.ui.showPoints(300, 600)
                 this.building.isTaken = true
                 this.building.placedBuilding = this.housesQueue[2]
                 this.building.lvl = this.housesQueue[2].level
