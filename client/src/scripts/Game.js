@@ -28,7 +28,6 @@ class Game {
         this.scoreP1 = 0
         this.scoreP2 = 0
         this.maxScore
-
     }
 
     start() {
@@ -170,39 +169,31 @@ class Game {
     }
 
     async createQueue() {
-        // console.log(this.board.fields)
         this.housesQueue = []
         for (let i = 0; i < 3; i++) {
             let building = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
-
-            //building.object.name = "queue"
-            //const House = new Queue(building)
-
             this.housesQueue.push(building)
         }
+        console.log(this.housesQueue)
     }
 
     async updateQueue() {
+        console.log(this.housesQueue)
         for (let i = 2; i >= 0; i--) {
             if (i == 0) {
                 this.housesQueue[i] = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
-                //this.housesQueue[i].object.name = "queue"
             }
             else {
                 this.housesQueue[i] = this.housesQueue[i - 1]
-                let positionZ = this.queueFields.fieldsQ[0][i].position.z
-                if (this.housesQueue[i].level == 3) {
-                    positionZ += 20
-                }
-                this.housesQueue[i - 1].setPosition(this.queueFields.fieldsQ[0][i].position.x, this.housesQueue[i - 1].posY, positionZ)
+                await this.addingHouseQueueUpdate(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z, this.housesQueue[i].level)
             }
         }
+        console.log(this.housesQueue)
     }
 
     async addingHouse(posX, posY, posZ) {
         let lvl = this.generateRandomBuilding()
         let file = lvl + ".obj"
-        // console.log(file)
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         await this.building.loading()
         return this.building
@@ -210,23 +201,24 @@ class Game {
 
     async addingHouseUpdate(posX, posY, posZ, lvl, row, column) {
         let file = lvl + ".obj"
-        // console.log(file)
         this.board.fields[row][column].isTaken = true
         this.board.fields[row][column].lvl = lvl
-
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
         this.board.fields[row][column].placedBuilding = this.building
-        //this.board.fields[row][column].placedBuilding.object.name = "build"
-
         await this.building.loading()
         return this.building
     }
 
-
+    async addingHouseQueueUpdate(posX, posY, posZ, lvl) {
+        let file = lvl + ".obj"
+        // console.log(file)
+        this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
+        await this.building.loading()
+        return this.building
+    }
 
     generateRandomBuilding() {
         let x = Math.floor(Math.random() * (6 - 1)) + 1;
-        console.log(x)
         return x;
     }
 
@@ -246,7 +238,6 @@ class Game {
                 this.scene.remove(e)
             }
         })
-        //console.log("USUWANIE")
         board.forEach(element => {
             this.scene.remove(element.object)
         });
@@ -256,47 +247,32 @@ class Game {
 
 
         if (this.board.fields[row + 1] && this.board.fields[row + 1][column]) {
-            //console.log("1" + (this.board.fields[row + 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row + 1][column])))
             if (this.board.fields[row + 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row + 1][column])) {
                 this.recTab.push(this.board.fields[row + 1][column])
-                //console.log('NO COS JEST')
-
                 this.recursion(this.board.fields[row + 1][column], row + 1, column)
-                //  console.log(this.board.fields[row + 1][column], row + 1, column)
             }
         }
 
         if (this.board.fields[row - 1] && this.board.fields[row - 1][column]) {
-            //console.log("2" + (this.board.fields[row - 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row - 1][column])))
             if (this.board.fields[row - 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row - 1][column])) {
                 this.recTab.push(this.board.fields[row - 1][column])
-                //console.log('NO COS JEST')
-
                 this.recursion(this.board.fields[row - 1][column], row - 1, column)
-                //  console.log(this.board.fields[row - 1][column], row - 1, column)
             }
         }
 
 
         if (this.board.fields[row] && this.board.fields[row][column - 1]) {
-            // console.log("3" + (this.board.fields[row][column - 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column - 1])))
             if (this.board.fields[row][column - 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column - 1])) {
                 this.recTab.push(this.board.fields[row][column - 1])
-                // console.log('NO COS JEST')
-
                 this.recursion(this.board.fields[row][column - 1], row, column - 1)
-                //  console.log(this.board.fields[row - 1][column], row, column - 1)
             }
         }
 
 
         if (this.board.fields[row] && this.board.fields[row][column + 1]) {
-            //console.log("4" + (this.board.fields[row][column + 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column + 1])))
             if (this.board.fields[row][column + 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column + 1])) {
                 this.recTab.push(this.board.fields[row][column + 1])
-                // console.log('NO COS JEST')
                 this.recursion(this.board.fields[row][column + 1], row, column + 1)
-                //   console.log(this.board.fields[row][column + 1], row, column + 1)
             }
         }
 
@@ -331,7 +307,6 @@ class Game {
                 let positionZ = this.intersects[0].object.position.z
                 if (this.housesQueue[2].level == 3) {
                     positionZ += 20
-                    console.log(this.housesQueue[2].object.name)
                 }
                 this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
                 this.buildingsAll.push(this.housesQueue[2])
@@ -358,8 +333,6 @@ class Game {
                     this.ui.showPoints(this.scoreP1, this.scoreP2)
 
                 }
-
-                this.updateQueue()
                 this.socket.nextTurn(this.buildings, this.scoreP1)
                 this.yourTurn = false
 

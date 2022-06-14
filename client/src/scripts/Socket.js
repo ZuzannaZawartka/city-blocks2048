@@ -43,7 +43,6 @@ class Socket {
         });
 
         this.socket.on('turn', (board, score) => {
-
             this.game.scoreP2 = score
             this.game.ui.showPoints(this.game.scoreP1, score)
 
@@ -53,11 +52,8 @@ class Socket {
                     this.game.scene.remove(e)
                 }
             })
-
-            console.log(board)
             if (board != undefined) {
                 this.game.buildings = board
-                console.log(this.game.buildings)
             }
 
             if (this.game.buildingsAll.length > 0) {
@@ -72,7 +68,7 @@ class Socket {
                 board.forEach(element => {
                     this.game.addingHouseUpdate(this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.x, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.y, this.game.board.fields[element.fieldRow][element.fieldColumn].mesh.position.z, element.level, element.fieldRow, element.fieldColumn)
                 });
-
+            this.game.updateQueue()
             this.ui.delwaitingForOpponent()
             this.game.yourTurn = true
         });
