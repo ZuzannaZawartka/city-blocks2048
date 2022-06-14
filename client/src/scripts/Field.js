@@ -5,6 +5,8 @@ class Field {
         this.elementDepth = elementDepth
         this.row = row
         this.column = column
+        this.fieldRow = undefined
+        this.fieldColumn = undefined
         this.isTaken = false
         this.lvl = undefined
         this.placedBuilding = undefined

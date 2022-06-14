@@ -43,14 +43,25 @@ class Socket {
         });
 
         this.socket.on('turn', (board) => {
+
+            this.game.scene.children.forEach(e => {
+                if (e.name == "build") {
+                    this.game.scene.remove(e)
+                }
+            })
+
+            console.log(board)
             if (board != undefined) {
                 this.game.buildings = board
+                console.log(this.game.buildings)
             }
 
             if (this.game.buildingsAll.length > 0) {
-                this.game.buildingsAll.forEach(element => {
-                    this.game.scene.remove(element.object)
-                });
+
+                this.game.deleteElementsFromScene(this.game.buildingsAll)
+                // this.game.buildingsAll.forEach(element => {
+                //     this.game.scene.remove(element.object)
+                // });
                 this.game.clearFieldsData()
             }
             if (board != undefined && board.length > 0)
@@ -86,6 +97,7 @@ class Socket {
         this.ui.waitingForTurn()
         let username = this.username
         this.socket.emit('turn', { username, board });
+
     }
 }
 

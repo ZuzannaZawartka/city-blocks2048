@@ -54,6 +54,7 @@ class Building {
         }
         object.position.set(this.posX, this.posY, this.posZ)
         this.object = object
+        this.object.name = "build"
         this.scene.add(object)
     }
 

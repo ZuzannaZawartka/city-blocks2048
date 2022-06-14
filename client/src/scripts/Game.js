@@ -169,6 +169,7 @@ class Game {
         for (let i = 0; i < 3; i++) {
             let building = await this.addingHouse(this.queueFields.fieldsQ[0][i].position.x, this.queueFields.fieldsQ[0][i].position.y, this.queueFields.fieldsQ[0][i].position.z)
             //const House = new Queue(building)
+
             this.housesQueue.push(building)
         }
     }
@@ -203,13 +204,15 @@ class Game {
         // console.log(file)
         this.board.fields[row][column].isTaken = true
         this.board.fields[row][column].lvl = lvl
+
         this.building = new Building(lvl, file, this.scene, posX, posY, posZ)
+        this.board.fields[row][column].placedBuilding = this.building
         await this.building.loading()
         return this.building
     }
 
     generateRandomBuilding() {
-        return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+        return Math.floor(Math.random() * (1 - 1 + 1)) + 1;
     }
 
     clearFieldsData() {
@@ -221,14 +224,27 @@ class Game {
         }
     }
 
+    deleteElementsFromScene(board) {
+
+        this.scene.children.forEach(e => {
+            if (e.name == "build") {
+                this.scene.remove(e)
+            }
+        })
+        //console.log("USUWANIE")
+        board.forEach(element => {
+            this.scene.remove(element.object)
+        });
+    }
+
     recursion = (field, row, column) => {
 
 
         if (this.board.fields[row + 1] && this.board.fields[row + 1][column]) {
-            console.log("1" + (this.board.fields[row + 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row + 1][column])))
+            //console.log("1" + (this.board.fields[row + 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row + 1][column])))
             if (this.board.fields[row + 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row + 1][column])) {
                 this.recTab.push(this.board.fields[row + 1][column])
-                console.log('NO COS JEST')
+                //console.log('NO COS JEST')
 
                 this.recursion(this.board.fields[row + 1][column], row + 1, column)
                 //  console.log(this.board.fields[row + 1][column], row + 1, column)
@@ -236,10 +252,10 @@ class Game {
         }
 
         if (this.board.fields[row - 1] && this.board.fields[row - 1][column]) {
-            console.log("2" + (this.board.fields[row - 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row - 1][column])))
+            //console.log("2" + (this.board.fields[row - 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row - 1][column])))
             if (this.board.fields[row - 1][column].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row - 1][column])) {
                 this.recTab.push(this.board.fields[row - 1][column])
-                console.log('NO COS JEST')
+                //console.log('NO COS JEST')
 
                 this.recursion(this.board.fields[row - 1][column], row - 1, column)
                 //  console.log(this.board.fields[row - 1][column], row - 1, column)
@@ -248,10 +264,10 @@ class Game {
 
 
         if (this.board.fields[row] && this.board.fields[row][column - 1]) {
-            console.log("3" + (this.board.fields[row][column - 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column - 1])))
+            // console.log("3" + (this.board.fields[row][column - 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column - 1])))
             if (this.board.fields[row][column - 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column - 1])) {
                 this.recTab.push(this.board.fields[row][column - 1])
-                console.log('NO COS JEST')
+                // console.log('NO COS JEST')
 
                 this.recursion(this.board.fields[row][column - 1], row, column - 1)
                 //  console.log(this.board.fields[row - 1][column], row, column - 1)
@@ -260,41 +276,14 @@ class Game {
 
 
         if (this.board.fields[row] && this.board.fields[row][column + 1]) {
-            console.log("4" + (this.board.fields[row][column + 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column + 1])))
+            //console.log("4" + (this.board.fields[row][column + 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column + 1])))
             if (this.board.fields[row][column + 1].lvl == this.building.lvl && !this.recTab.find(el => el == this.board.fields[row][column + 1])) {
                 this.recTab.push(this.board.fields[row][column + 1])
-                console.log('NO COS JEST')
+                // console.log('NO COS JEST')
                 this.recursion(this.board.fields[row][column + 1], row, column + 1)
                 //   console.log(this.board.fields[row][column + 1], row, column + 1)
             }
         }
-
-
-
-        console.log(this.recTab)
-
-
-
-        // for (let i = -1; i < 2; i++) {
-        //     for (let j = -1; j < 2; j++) {
-        //         try {
-        //             if (this.board.fields[row + i][column + j].isTaken) {
-
-
-        //                 if (this.board.fields[row + i][column + j].lvl == this.building.lvl && this.board.fields[row + i][column + j] != this.building && !this.board.fields[row + i][column + j].isChecked) {
-
-        //                     this.board.fields[row + i][column + j].isChecked = true
-        //                     console.log(this.tab.find(el => el == this.board.fields[row + i][column + j]))
-        //                     this.recursion(this.board.fields[row + i][column + j], row + i, column + j)
-        //                     this.tab.push(this.board.fields[row + i][column + j])
-        //                     console.log(this.tab)
-        //                 }
-        //             }
-        //         } catch (error) {
-
-        //         }
-        //     }
-        // }
 
     }
 
@@ -308,6 +297,7 @@ class Game {
         this.intersects = this.raycaster.intersectObjects(this.scene.children);
         if (this.intersects.length > 0) {
             // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
+
             this.building;
             let r, c
             for (let k = 0; k < this.board.fields.length; k++) {
@@ -327,6 +317,7 @@ class Game {
                     positionZ += 20
                 }
 
+
                 this.buildings.push({ level: this.housesQueue[2].level, fieldRow: r, fieldColumn: c, posX: this.housesQueue[2].posX, posY: this.housesQueue[2].posY, posZ: this.housesQueue[2].posZ })
                 this.buildingsAll.push(this.housesQueue[2])
                 this.housesQueue[2].setPosition(this.intersects[0].object.position.x, this.housesQueue[2].posY, positionZ)
@@ -338,6 +329,48 @@ class Game {
 
                 this.recTab = []
                 this.recursion(this.building, r, c)
+                //console.log(this.buildings)
+                //console.log(this.scene.children)
+                //sprawdzenie czy mamy wiecej niz 3 elementy obok siebie
+                // console.log(this.buildings)
+                // console.log(this.buildings)
+                if (this.recTab.length >= 3) {
+
+                    //usuniecie elementow 
+                    this.recTab.forEach(element => {
+                        //console.log(this.scene.children.find(e => e.uuid == element.placedBuilding.object.uuid))
+
+                        let i = this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn)
+
+
+                        this.buildings = this.buildings.filter(e => e != i)
+                        //let ex = this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn)
+                        //console.log(this.buildings)
+                        // this.buildings.filter(e => e != this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn))
+
+                        // console.log(this.buildings.find(el => el.posX == element.placedBuilding.posX && el.posY == element.placedBuilding.posY && el.posZ == element.placedBuilding.posZ))
+
+                        // console.log(this.buildings.filter(el => el.posX == element.placedBuilding.posX && el.posY != element.placedBuilding.posY && el.posZ != element.placedBuilding.posZ))
+                        // //this.buildings = this.buildings.filter(el => el.posX == element.placedBuilding.posX && el.posY == element.placedBuilding.posY && el.posZ == element.placedBuilding.posZ)
+                        // console.log(this.buildings)
+                        // e.isTaken = false
+                        // e.lvl = undefined
+
+                        // console.log(this.scene.children.length)
+                        this.scene.remove(element.placedBuilding.object)
+                        // this.scene = this.scene.filter(e => e !=)
+                        // console.log(this.scene.children)
+                        //console.log(this.scene.children.length)
+                    });
+
+                    console.log(this.scene.children)
+                    //  console.log(this.buildings)
+                    //console.log(this.buildings)
+                }
+                //   console.log(this.recTab)
+
+
+
 
                 this.updateQueue()
                 this.socket.nextTurn(this.buildings)
