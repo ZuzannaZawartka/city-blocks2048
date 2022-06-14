@@ -410,7 +410,7 @@ class Game {
     }
 
     render = () => {
-        this.background.position.x = Math.sin(this.angle) * 200
+        this.background.position.x = Math.sin(this.angle) * 100
         this.angle += 0.01// obrót kamery
         window.addEventListener('resize', this.WindowResize, false);
         this.renderer.render(this.scene, this.camera)
