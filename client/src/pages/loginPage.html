@@ -99,7 +99,9 @@
 
         #opponent_text {
             text-align: center;
-            color: white;
+            color: #ffb027;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 30px;
             margin: 0 auto;
 
         }
@@ -107,7 +109,7 @@
         #window_score1 {
             position: absolute;
             top: 0;
-            left: 0;
+            left: 5vw;
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -122,7 +124,7 @@
         #window_score2 {
             position: absolute;
             top: 0;
-            right: 0;
+            right: 5vw;
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -144,7 +146,7 @@
 
         #score_1_2 {
             background-color: #ffb027;
-            width: 10vw;
+            width: 0vw;
             height: 1.5vh;
             border-radius: 20px;
         }
@@ -159,9 +161,42 @@
 
         #score_2_2 {
             background-color: #ffb027;
-            width: 10vw;
+            width: 0vw;
             height: 1.5vh;
             border-radius: 20px;
+        }
+
+        #score_1_num {
+            position: absolute;
+            top: 10vh;
+            left: 1vw;
+            text-align: center;
+            color: #ffb027;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 35px;
+        }
+
+        #score_2_num {
+            position: absolute;
+            top: 10vh;
+            right: 1vw;
+            text-align: center;
+            color: #ffb027;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 35px;
+        }
+
+        #score1_text {
+            color: white;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 35px;
+        }
+
+
+        #score2_text {
+            color: white;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 35px;
         }
     </style>
     <title>Login Page</title>
@@ -175,18 +210,16 @@
             <div id="score_1">
                 <div id="score_1_2"></div>
             </div>
-
-
+            <div id="score1_text">holiness score:</div>
+            <div id="score_1_num">300</div>
         </div>
         <div id="window_score2">
             <h1 id="nick2">user2</h1>
             <div id="score_2">
                 <div id="score_2_2"></div>
             </div>
-
-
-
-
+            <div id="score2_text">holiness score:</div>
+            <div id="score_2_num">600</div>
         </div>
         <img id="brand" src="../images/logo.png" width="500">
         <div id="window_log">
