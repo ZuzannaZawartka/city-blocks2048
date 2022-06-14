@@ -49,6 +49,7 @@ class Game {
         this.settingCamera() // Wywoływanie funckji początkowych do kamery, rendera i kreowania świata
         this.settingRenderer()
         this.creatingWorld()
+        this.addingBackground()
         this.addingLight()
         this.addingQueueFields()
         this.createQueue()
@@ -167,6 +168,20 @@ class Game {
     addingLight() {
         this.light = new Light(this.GiantCube)
         this.scene.add(this.light.getLight())
+    }
+
+    addingBackground() {
+        this.backgroundGeometry = new THREE.PlaneGeometry(10000, 10000);
+        this.backgroundMaterial = new THREE.MeshBasicMaterial({
+            side: THREE.DoubleSide, // dwustronny
+            map: new THREE.TextureLoader().load('../images/stars.jpg'), // plik tekstury
+            transparent: false, // przezroczysty 
+            opacity: 1, // stopień przezroczystości 
+        });
+        this.background = new THREE.Mesh(this.backgroundGeometry, this.backgroundMaterial);
+        this.background.position.set(-4000, -500, -4000)
+        this.background.rotateY(Math.PI / 4)
+        this.scene.add(this.background);
     }
 
     async createQueue() {
@@ -379,8 +394,8 @@ class Game {
     }
 
     render = () => {
-        // this.camera.position.x = Math.sin(this.angle) * 500
-        // this.angle += 0.01 // obrót kamery
+        this.background.position.x = Math.sin(this.angle) * 200
+        this.angle += 0.01// obrót kamery
         window.addEventListener('resize', this.WindowResize, false);
         this.renderer.render(this.scene, this.camera)
         this.camera.updateProjectionMatrix()
