@@ -43,6 +43,19 @@ class Ui {
     }
 
 
+    winWindow(points, opoints) {
+        console.log("OKNO WYGRYWAJACE")
+        document.getElementById("bg_log").style.display = this.bg
+        document.getElementById("opponent_text").innerHTML = "You Win, you get " + points + "and your opponent have " + opoints
+        document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
+    }
+
+
+    looseWindow(points, opoints) {
+        document.getElementById("bg_log").style.display = this.bg
+        document.getElementById("opponent_text").innerHTML = "You Loose, you get " + opoints + "and your opponent have " + points
+        document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
+    }
 
     delwaitingForOpponent() {
         document.getElementById("bg_log").style.display = "none"

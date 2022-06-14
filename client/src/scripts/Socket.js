@@ -78,6 +78,15 @@ class Socket {
             this.game.yourTurn = true
         });
 
+        this.socket.on('endGame', ({ points, opoints }) => {
+            //this.isGameStarted = false
+            console.log("KONIEC GRY")
+            console.log(points + "/" + opoints)
+            this.ui.looseWindow(points, opoints)
+            this.game.yourTurn = false
+        });
+
+
 
         this.socket.on('disconnectUser', () => {
             this.isGameStarted = false
@@ -104,6 +113,14 @@ class Socket {
         this.game.deleteElementsFromScene(this.game.scene.children)
         let username = this.username
         this.socket.emit('turn', { username, board, score });
+
+    }
+
+    endGame(points, opoints) {
+
+        console.log(points + " " + opoints)
+        this.ui.winWindow(points, opoints)
+        this.socket.emit('endGame', ({ points, opoints }));
 
     }
 }

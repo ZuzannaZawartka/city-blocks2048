@@ -19,6 +19,7 @@ let botName = "Grzes"
 let boardOnServer;
 let boards = []
 let scorex = 0;
+let user;
 
 const socketsInit = (server) => {
     io = new Server(server);
@@ -70,6 +71,18 @@ const socketsInit = (server) => {
 
         socket.on('message', msg => {
             console.log(msg)
+        });
+
+        socket.on('endGame', ({ points, opoints }) => {
+
+
+
+
+            console.log("END Z SOCKETU")
+            console.log(points + "/" + opoints)
+            const user = getCurrentUser(socket.id);
+
+            socket.broadcast.to(user.room).emit('endGame', ({ points, opoints }));
         });
 
         socket.on('turn', ({ username, board, score }) => {

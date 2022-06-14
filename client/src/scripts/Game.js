@@ -27,7 +27,7 @@ class Game {
         this.endingElement == undefined;
         this.scoreP1 = 0
         this.scoreP2 = 0
-        this.maxScore
+        this.maxScore = 3000
         this.firstTurn = false
     }
 
@@ -322,11 +322,28 @@ class Game {
 
                 this.recTab = []
                 this.recursion(this.building, r, c)
-                console.log(this.recTab)
+
+
+
+                console.log(this.scoreP1)
+                console.log(this.scoreP2)
+
 
                 if (this.recTab.length >= 3) {
                     //przyznanie punktow za zgranie domkow
                     this.scoreP1 += (this.recTab.length * this.recTab[0].placedBuilding.points)
+
+
+                    console.log(this.scoreP1)
+                    if (this.scoreP1 >= this.maxScore) {
+                        console.log("END GAME")
+
+
+
+                        this.socket.endGame(this.scoreP1, this.scoreP2)
+                        this.yourTurn = false
+
+                    }
                     //usuniecie elementow 
                     this.recTab.forEach(element => {
                         let i = this.buildings.find(e => e.fieldRow == element.fieldRow && e.fieldColumn == element.fieldColumn)
@@ -348,13 +365,11 @@ class Game {
 
                 }
 
-
-
-
-
-
                 this.deleteElementsFromScene(this.scene.children)
-                this.socket.nextTurn(this.buildings, this.scoreP1)
+                if (this.yourTurn) {
+                    this.socket.nextTurn(this.buildings, this.scoreP1)
+                }
+
                 this.yourTurn = false
 
             }
