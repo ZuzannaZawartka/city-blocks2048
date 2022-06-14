@@ -19,6 +19,12 @@ class Ui {
         this.waitingForOpponent()
     }
 
+    moveLogo() {
+        document.getElementById("brand").style.transition = "all 0.5s ease-out";
+        document.getElementById("brand").style.transform = "scale(0.45, 0.45)";
+        document.getElementById("brand").style.top = "-17vh"
+    }
+
     waitingForOpponent() {
         document.getElementById("opponent_text").innerHTML = "WAITING FOR OPPONENT"
         document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"

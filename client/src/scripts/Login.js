@@ -11,6 +11,7 @@ class Login {
 
             if (this.main.socketClass.joinRoom((document.getElementById("nick").value).toString())) {
                 this.ui.hideLogin()
+                this.ui.moveLogo()
             } else {
                 console.log("NIEZALOGOWANO")
             }
