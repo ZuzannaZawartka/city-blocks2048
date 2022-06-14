@@ -28,6 +28,7 @@ class Game {
         this.scoreP1 = 0
         this.scoreP2 = 0
         this.maxScore
+        this.firstTurn = false
     }
 
     start() {
