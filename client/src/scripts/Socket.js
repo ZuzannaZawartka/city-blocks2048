@@ -43,6 +43,8 @@ class Socket {
         });
 
         this.socket.on('turn', (board, score) => {
+
+            this.game.deleteElementsFromScene(this.game.scene.children)
             this.game.firstTurn = true
             this.game.scoreP2 = score
             this.game.ui.showPoints(this.game.scoreP1, score)
@@ -99,6 +101,7 @@ class Socket {
     nextTurn(board, score) {
 
         this.ui.waitingForTurn()
+        this.game.deleteElementsFromScene(this.game.scene.children)
         let username = this.username
         this.socket.emit('turn', { username, board, score });
 
