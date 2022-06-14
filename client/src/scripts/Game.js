@@ -321,6 +321,8 @@ class Game {
 
                 this.recTab = []
                 this.recursion(this.building, r, c)
+                console.log(this.recTab)
+
                 if (this.recTab.length >= 3) {
                     //przyznanie punktow za zgranie domkow
                     this.scoreP1 += (this.recTab.length * this.recTab[0].placedBuilding.points)
@@ -333,6 +335,8 @@ class Game {
                     this.ui.showPoints(this.scoreP1, this.scoreP2)
 
                 }
+
+                this.deleteElementsFromScene(this.scene.children)
                 this.socket.nextTurn(this.buildings, this.scoreP1)
                 this.yourTurn = false
 
