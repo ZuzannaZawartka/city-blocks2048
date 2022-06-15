@@ -1,5 +1,4 @@
 class Socket {
-
     constructor(socket, ui) {
         this.socket = socket
         this.ui = ui
@@ -32,6 +31,9 @@ class Socket {
 
 
         this.socket.on('play', ({ user, users }) => {
+            // setTimeout(() => {
+            //     this.socket.emit("endGame", { points: 100, options: "goood" })
+            // }, 1000)
             this.game.start()
             this.users = users
             this.room = user.room
@@ -88,17 +90,13 @@ class Socket {
                 this.ui.looseWindow(points, opoints)
             }
             console.log(points + "/" + opoints)
-
             this.game.yourTurn = false
         });
-
-
 
         this.socket.on('disconnectUser', () => {
             this.isGameStarted = false
             this.ui.noPlayers()
         });
-
     }
 
     joinRoom(username) {

@@ -1,4 +1,5 @@
 const { Server } = require("socket.io");
+const Datastore = require('nedb')
 let io;
 
 const {
@@ -22,6 +23,11 @@ let scorex = 0;
 let user;
 
 const socketsInit = (server) => {
+    const base = new Datastore({
+        filename: 'kolekcja.db',
+        autoload: true
+    });
+
     io = new Server(server);
 
     io.on('connection', (socket) => {
@@ -74,13 +80,20 @@ const socketsInit = (server) => {
         });
 
         socket.on('endGame', ({ points, opoints }) => {
-
-
-
-
             console.log("END Z SOCKETU")
             console.log(points + "/" + opoints)
             const user = getCurrentUser(socket.id);
+
+            const doc = {
+                user: users[0],
+                points: points
+            }
+
+            base.insert(doc, function (err, newDoc) {
+                console.log("dodano dokument (obiekt):")
+                console.log(newDoc)
+                console.log("losowe id dokumentu: " + newDoc._id)
+            });
 
             socket.broadcast.to(user.room).emit('endGame', ({ points, opoints }));
         });
