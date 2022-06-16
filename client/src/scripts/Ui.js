@@ -44,6 +44,8 @@ class Ui {
 
 
     winWindow(points, opoints) {
+        this.crowd = new Audio('../sounds/crowd.wav');
+        this.crowd.play()
         console.log("OKNO WYGRYWAJACE")
         document.getElementById("bg_log").style.display = this.bg
         document.getElementById("opponent_text").innerHTML = "You have won, you got " + points + " and your opponent got " + opoints
@@ -52,6 +54,8 @@ class Ui {
 
 
     looseWindow(points, opoints) {
+        this.crowd = new Audio('../sounds/boo.wav');
+        this.crowd.play()
         document.getElementById("bg_log").style.display = this.bg
         document.getElementById("opponent_text").innerHTML = "You have lost, you got " + opoints + " and your opponent got " + points
         document.getElementById("bg_log").style.backgroundColor = "rgba(2,100,100,0.6)"
