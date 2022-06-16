@@ -27,7 +27,7 @@ class Game {
         this.endingElement == undefined;
         this.scoreP1 = 0
         this.scoreP2 = 0
-        this.maxScore = 100
+        this.maxScore = 2000
         this.firstTurn = false
     }
 
