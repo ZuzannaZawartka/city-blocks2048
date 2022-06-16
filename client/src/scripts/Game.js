@@ -32,6 +32,10 @@ class Game {
     }
 
     start() {
+        this.music = new Audio('../sounds/music.mp3');
+        this.music.volume = 0.2
+        this.music.loop = true;
+        this.music.play();
         window.addEventListener('mousemove', (e) => {
             this.mousemove(e)
         })
@@ -295,7 +299,13 @@ class Game {
     }
 
     mouseDown = (event) => {
-
+        this.music.pause();
+        this.put = new Audio('../sounds/put.wav');
+        this.put.volume = 0.2
+        this.put.play()
+        setTimeout(() => {
+            this.music.play();
+        }, 1000);
         this.raycaster = new THREE.Raycaster(); // obiekt Raycastera symulujący "rzucanie" promieni
         this.mouseVector = new THREE.Vector2() // ten wektor czyli pozycja w przestrzeni 2D na ekranie(x,y) wykorzystany będzie do określenie pozycji myszy na ekranie, a potem przeliczenia na pozycje 3D
 
@@ -432,6 +442,12 @@ class Game {
 
     render = () => {
         this.background.position.x = Math.sin(this.angle) * 100
+        if (!this.socket.isGameStarted) {
+            this.scene.position.y = Math.sin(this.angle) * 300
+        }
+        else {
+            this.scene.position.y = 0
+        }
         this.angle += 0.01// obrót kamery
         window.addEventListener('resize', this.WindowResize, false);
         this.renderer.render(this.scene, this.camera)
