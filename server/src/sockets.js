@@ -130,11 +130,13 @@ const socketsInit = (server) => {
             console.log("user disconnect")
         });
 
-
+        socket.on('leaderboard', () => {
+            const user = getCurrentUser(socket.id);
+            base.find({}, function (err, docs) {
+                io.to(user.room).emit('showLeaderboard', (docs));
+            });
+        });
     });
-
-
-
 }
 
 

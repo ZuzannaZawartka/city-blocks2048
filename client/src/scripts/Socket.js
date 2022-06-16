@@ -85,9 +85,17 @@ class Socket {
             console.log("KONIEC GRY")
             if (opoints > points) {
                 this.ui.winWindow(points, opoints)
+                setTimeout(() => {
+                    this.socket.emit('leaderboard', {})
+                    this.ui.showLeaderboard()
+                }, 3000);
 
             } else {
                 this.ui.looseWindow(points, opoints)
+                setTimeout(() => {
+                    this.socket.emit('leaderboard', {})
+                    this.ui.showLeaderboard()
+                }, 3000);
             }
             console.log(points + "/" + opoints)
             this.game.yourTurn = false
@@ -96,6 +104,11 @@ class Socket {
         this.socket.on('disconnectUser', () => {
             this.isGameStarted = false
             this.ui.noPlayers()
+        });
+
+
+        this.socket.on('showLeaderboard', (data) => {
+            this.ui.showLeaderboard(data)
         });
     }
 

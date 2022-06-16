@@ -80,6 +80,39 @@ class Ui {
         document.getElementById('score_1_2').style.width = `${proportion1}vw`
         document.getElementById('score_2_2').style.width = `${proportion2}vw`
     }
+
+    showLeaderboard(data) {
+        document.getElementById("brand").style.left = "5vw"
+        console.log(data)
+        data.sort((a, b) => parseFloat(b.points) - parseFloat(a.points));
+        document.getElementById("opponent_text").style.display = "none"
+        const tbl = document.createElement("table");
+        let i = 0;
+        const row = document.createElement("tr");
+        const cell1 = document.createElement("td");
+        const cell2 = document.createElement("td");
+        cell1.innerHTML = "Nick"
+        cell2.innerHTML = "Score"
+        row.append(cell1)
+        row.append(cell2)
+        tbl.append(row)
+        for (let i = 0; i < 10; i++) {
+            const row = document.createElement("tr");
+            for (let j = 0; j < 2; j++) {
+                const cell = document.createElement("td");
+                if (j == 0) {
+                    cell.innerHTML = data[i].user.username
+                }
+                else {
+                    cell.innerHTML = data[i].points
+                }
+                row.append(cell)
+            }
+            console.log(data[i])
+            tbl.append(row)
+        }
+        document.getElementById("leaderboard").append(tbl)
+    }
 }
 
 export default Ui
