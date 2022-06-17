@@ -96,7 +96,7 @@ class Game {
     //CREATING WORLD PART 
 
     creatingWorld() {
-        this.addingAxes() // funckje do tworzenia poszczególnych elementów świata
+        //this.addingAxes() // funckje do tworzenia poszczególnych elementów świata
         this.addingBoard()
         this.addingDecorationCubes()
     }

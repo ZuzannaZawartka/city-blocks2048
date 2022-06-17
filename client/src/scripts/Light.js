@@ -11,9 +11,9 @@ class Light {
         const material = new THREE.MeshBasicMaterial({
             color: 0x8888ff,
             side: THREE.DoubleSide,
-            wireframe: true,
+            wireframe: false,
             transparent: true,
-            opacity: 1
+            opacity: 0
         })
         this.light = new THREE.DirectionalLight(0xffffff, 1)
         this.container.add(this.light)
