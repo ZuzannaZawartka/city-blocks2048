@@ -8,7 +8,7 @@ const server = http.createServer(app);
 
 socketsInit(server)
 
-server.listen(process.env.APP_PORT || PORT, () => {
+server.listen(process.env.PORT || PORT, () => {
     console.log(`listen on ${process.env.APP_PORT}`)
 });
 
