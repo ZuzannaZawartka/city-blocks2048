@@ -1,0 +1,29 @@
+{
+  "name": "city-blocks2048",
+  "version": "1.0.0",
+  "description": "end-of-year project \r [![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)](https://forthebadge.com)",
+  "main": "index.js",
+  "dependencies": {
+    "app": "^0.1.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "nedb": "^1.8.0",
+    "socket.io": "^4.5.1",
+    "sockets": "^0.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZuzannaZawartka/city-blocks2048.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZuzannaZawartka/city-blocks2048/issues"
+  },
+  "homepage": "https://github.com/ZuzannaZawartka/city-blocks2048#readme"
+}
